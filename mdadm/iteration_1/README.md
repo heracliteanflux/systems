@@ -43,11 +43,34 @@ After you finish your onboarding session and enjoyed a free lunch with your new 
 
 "Welcome to the team! Here's your first task. You will work on integrating the JBOD into our existing storage system. For the next week or so, you will implement one of the functionalities of the `mdadm` Linux utility, which is an acronym for "multiple disk and device administration": a tool for doing cool tricks with multiple disks! In particular, you will implement a linear device. A linear device makes multiple disks appear as one large disk to the operating system. In our case, we will make $16$ $64 \\,\\,\\text{KB}$-disks appear as one $4 \\,\\,\\text{MB}$-disk to the operating system.
 
-Below are described the specific functionality that must be implemented."
+Below is described the specific functionality that must be implemented.
+
+File `jbod.h`:
 
 ```h
-#define DISKS        16   //     16 disk
-#define BLCK_SIZE   256   //    256 B per block
-#define BLCK_DISK   256   //    256 block per disk
-#define DISK_SIZE 65536   // 65,536 B per disk
+// enter the correct values for the following macros
+#define DISKS     //     16 disk
+#define BLCK_SIZE //    256 B per block
+#define BLCK_DISK //    256 block per disk
+#define DISK_SIZE // 65,536 B per disk
 ```
+
+File `mdadm.c`:
+
+```c
+//   mount the linear device
+int mdadm_mount   (void) {
+  if (jbod_operation() == 0) return  1; // success
+  else                       return -1; // failure - jbod_operation == -1
+}
+
+// unmount the linear device
+int mdadm_unmount (void) {
+  if (jbod_operation() == 0) return  1; // success
+  else                       return -1; // failure - jbod_operation == -1
+}
+
+int mdadm_read (uint32_t addr, uint32_t len, uint8_t *buf)
+```
+
+Good luck!"
