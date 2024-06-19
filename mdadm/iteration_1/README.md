@@ -6,8 +6,15 @@ Today is the first day of your internship at a cryptocurrency startup. The marke
 
 $16 \\,\\,\text{disks}\\,\\, \times 256 \\,\\,\text{blocks per disk}\\,\\, \times 256 \\,\\,\text{B per block} = 1,048,576 \\,\\,\text{B}$
 
-The interface to the JBOD is a device driver containing a function with the following signature:"
+The interface to the JBOD is a device driver with the function
 
 ```c
 int jbod_operation (uint32_t op, uint8_t *block)
 ```
+
+which returns `0` on success and `-1` on failure. It accepts two parameters: an operation via parameter `op` the format of which is described below and a pointer to a buffer via parameter `block`.
+
+$\underbrace{0000 \\, 0000 \\, 0000 \\, 0000 \\, 0000 \\, 00}_{\text{reserved}}
+\underbrace{00 \\, 0000 \\, 00}_{\text{block}}
+\underbrace{00 \\, 00}_{\text{disk}}
+\underbrace{00 \\, 0000}_{\text{command}}$
