@@ -18,3 +18,10 @@ $\\underbrace{0000 \\, 0000 \\, 0000 \\, 0000 \\, 0000 \\, 00}\_{\\text{reserved
 \\underbrace{00 \\, 0000 \\, 00}\_{\\text{block}}
 \\underbrace{00 \\, 00}\_{\\text{disk}}
 \\underbrace{00 \\, 0000}\_{\\text{command}}$
+
+bits | width | field | description
+-|-|-|-
+  0-5 |  6 | command  | the command to be executed by the JBOD
+  6-9 |  4 | disk ID  | 
+10-17 |  8 | block ID |
+18-31 | 14 | reserved | unused for now
