@@ -7,10 +7,10 @@ Today is the first day of your internship at a cryptocurrency startup. The marke
 $$
 16 \\,\\,\\text{disks}\\,\\, \times 
 \\underbrace{
-256 \\,\\,\text{blocks per disk}\\,\\, \times 
-256 \\,\\,\text{B per block}
-}\_{65,536 \\,\\,\text{B per disk}}
-= 1,048,576 \\,\\,\text{B}
+256 \\,\\,\\text{blocks per disk}\\,\\, \times 
+256 \\,\\,\\text{B per block}
+}_{65,536 \\,\\,\\text{B per disk}}
+= 1,048,576 \\,\\,\\text{B}
 $$
 
 The interface to the JBOD is a device driver with the function `jbod_operation` which returns $0$ on success and $-1$ on failure. It accepts two parameters: an operation via parameter `op` the format of which is described below and a pointer to a buffer via parameter `block`.
