@@ -28,8 +28,8 @@ Jacob Sorber
 * [ [y](https://www.youtube.com/watch?v=bdIiTxtMaKA) ] `10-12-2018`. "How to build a web client? (sockets)".
 
 freeCodeCamp
-* [ [Y](https://www.youtube.com/watch?v=KJgsSFOSQv0) ] `08-15-2018` freeCodeCamp. "C Programming Tutorial for Beginners". YouTube.
-* [ [Y](https://www.youtube.com/watch?v=sWbUDq4S6Y8) ] `02-23-2023` freeCodeCamp. "Introduction to Linux – Full Course for Beginners". YouTube.
+* [ [y](https://www.youtube.com/watch?v=KJgsSFOSQv0) ] `08-15-2018` freeCodeCamp. "C Programming Tutorial for Beginners". YouTube.
+* [ [y](https://www.youtube.com/watch?v=sWbUDq4S6Y8) ] `02-23-2023` freeCodeCamp. "Introduction to Linux – Full Course for Beginners". YouTube.
 
 ## Texts
 
