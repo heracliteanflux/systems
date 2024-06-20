@@ -12,7 +12,7 @@ $$
 256 \\,\\,\text{B per block}
 }_{65,536 \\,\\,\text{B per disk}}
 &= 1,048,576 \\,\\,\text{B} \\
-a &= b \\
+ 16 \\,\\,\text{disks}\\,\\, \times 64 \\,\\,\text{KB per disk} &= 1 \\,\\,\text{MB} \\
 \end  {align}
 $$
 
