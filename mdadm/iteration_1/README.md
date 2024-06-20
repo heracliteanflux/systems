@@ -12,7 +12,9 @@ $$
 256 \\,\\,\text{B per block}
 }_{65,536 \\,\\,\text{B per disk}}
 &= 1,048,576 \\,\\,\text{B} \\
- \\underbrace{16}\_{2^4} \\,\\,\text{disks}\\,\\, \times \\underbrace{64}\_{2^6} \\,\\,\\underbrace{\text{KB}}\_{2^{10}} \text{per disk} &= 1 \\,\\,\\underbrace{\text{MB}}\_{2^20} \\
+\\underset{2^4}{16} \\,\\,\text{disks}\\,\\, \times
+\\underset{2^6}{64} \\,\\,\\underset{2^{10}}{\text{KB}} \text{per disk}
+&= 1 \\,\\,\\underset{2^{20}}{\text{MB}} \\
 \end  {align}
 $$
 
@@ -29,10 +31,12 @@ int jbod_operation (uint32_t op, uint8_t *block) {
 
 #### The format of parameter `op`
 
-$$\\underbrace{\\overset{31}{0}000 \\, 0000 \\, 0000 \\, 0\\overset{18}{0}}\_{\\text{reserved}} \\,
-  \\underbrace{\\overset{17}{0}0 \\, 0000 \\, 0\\overset{10}{0}}\_{\\text{block}} \\,
-  \\underbrace{\\overset{ 9}{0}0 \\, 0\\overset{6}{0}}\_{\\text{disk}} \\,
-  \\underbrace{\\overset{ 5}{0}0 \\, 000\\overset{0}{0}}\_{\\text{command}}$$
+$$
+\\underbrace{\\overset{31}{0}000 \\, 0000 \\, 0000 \\, 0\\overset{18}{0}}\_{\\text{reserved}} \\,
+\\underbrace{\\overset{17}{0}0 \\, 0000 \\, 0\\overset{10}{0}}\_{\\text{block}} \\,
+\\underbrace{\\overset{ 9}{0}0 \\, 0\\overset{6}{0}}\_{\\text{disk}} \\,
+\\underbrace{\\overset{ 5}{0}0 \\, 000\\overset{0}{0}}\_{\\text{command}}
+$$
 
 bits | width | field | description
 -|-|-|-
