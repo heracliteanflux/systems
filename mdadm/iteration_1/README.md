@@ -58,19 +58,35 @@ File `jbod.h`:
 File `mdadm.c`:
 
 ```c
-//   mount the linear device
+/*   mount the linear device
+ *     return 1 on success and -1 on failure
+ *     calling this function a second time without calling `mdadm_unmount` should fail
+ */
 int mdadm_mount   (void) {
+  // your implementation
   if (jbod_operation() == 0) return  1; // success
   else                       return -1; // failure - jbod_operation == -1
 }
 
-// unmount the linear device
+/* unmount the linear device
+ *     return 1 on success and -1 on failure
+ *     calling this function a second time without calling `mdadm_mount`   should fail
+ */
 int mdadm_unmount (void) {
+  // your implementation
   if (jbod_operation() == 0) return  1; // success
   else                       return -1; // failure - jbod_operation == -1
 }
 
-int mdadm_read (uint32_t addr, uint32_t len, uint8_t *buf)
+/* read LEN bytes into BUF starting at address ADDR
+ *   reading from an out-of-bounds address should fail
+ *   a read larger than 1,024 bytes should fail (i.e., LEN <= 1024)
+ */
+int mdadm_read (uint32_t addr, uint32_t LEN, uint8_t *BUF) {
+  if (...) return -1;
+  // your implementation
+  return LEN;
+}
 ```
 
 Good luck!"
