@@ -5,8 +5,8 @@
 
 #define JBOD_NUM_DISKS              16   //     16 disk
 #define JBOD_NUM_BLOCKS_PER_DISK   256   //    256 blck per disk
-#define JBOD_BLOCK_SIZE            256   //    256 B per block
-#define JBOD_DISK_SIZE           65536   // 65,536 B per disk
+#define JBOD_BLOCK_SIZE            256   //    256 B    per blck
+#define JBOD_DISK_SIZE           65536   // 65,536 B    per disk
 
 typedef enum {
   JBOD_MOUNT,

@@ -15,7 +15,7 @@ const int DISK_SIZE     = JBOD_DISK_SIZE;           //    65,536 B (64 KB) per d
 const int JBOD_SIZE     = DISK_SIZE * DISK;         // 1,048,576 B ( 1 MB) per jbod
 const int MAX_RDLEN     = BLCK_SIZE * 4;            //     1,024 B ( 1 KB)
 const int IGND          = 0;
-      int is_mounted    = 0;
+      int is_mounted    = 0;                        // unmounted = 0, mounted = 1
 
 // auxiliary function - construct a 32-bit operation
 uint32_t op (uint32_t rsvd, uint32_t blck, uint32_t disk, uint32_t cmnd) {
