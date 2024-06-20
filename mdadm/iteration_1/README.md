@@ -4,22 +4,25 @@ Today is the first day of your internship at a cryptocurrency startup. The marke
 
 "Thank you for purchasing our military-grade, nuclear bomb-proof hard disk product built with the same patented technology that's used by NASA. Each drive consists of 256 storage blocks where a storage block consists of 256 bytes. Thus each disk contains 65,536 bytes of storage.
 
-$16 \\,\\,\text{disks}\\,\\, \times 256 \\,\\,\text{blocks per disk}\\,\\, \times 256 \\,\\,\text{B per block} = 1,048,576 \\,\\,\text{B}$
+$$16 \\,\\,\text{disks}\\,\\, \times 256 \\,\\,\text{blocks per disk}\\,\\, \times 256 \\,\\,\text{B per block} = 1,048,576 \\,\\,\text{B}$$
 
-The interface to the JBOD is a device driver with the function
+The interface to the JBOD is a device driver with the function `jbod_operation` which returns $0$ on success and $-1$ on failure. It accepts two parameters: an operation via parameter `op` the format of which is described below and a pointer to a buffer via parameter `block`.
 
 ```c
-int jbod_operation (uint32_t op, uint8_t *block)
-//                  ^^^^^^^^^^^                             32-bit unsigned int
-//                               ^^^^^^^^^^^^^^   pointer to 8-bit unsigned int
+int jbod_operation (uint32_t op, uint8_t *block) {
+  //                ^^^^^^^^^^^                             32-bit unsigned int
+  //                             ^^^^^^^^^^^^^^   pointer to 8-bit unsigned int
+  if (success) return  0;
+  else         return -1;
+}
 ```
 
-which returns $0$ on success and $-1$ on failure. It accepts two parameters: an operation via parameter `op` the format of which is described below and a pointer to a buffer via parameter `block`.
+#### The format of parameter `op`
 
-$\\underbrace{\\overset{31}{0}000 \\, 0000 \\, 0000 \\, 0\\overset{18}{0}}\_{\\text{reserved}} \\,
-\\underbrace{\\overset{17}{0}0 \\, 0000 \\, 0\\overset{10}{0}}\_{\\text{block}} \\,
-\\underbrace{\\overset{9}{0}0 \\, 0\\overset{6}{0}}\_{\\text{disk}} \\,
-\\underbrace{\\overset{5}{0}0 \\, 000\\overset{0}{0}}\_{\\text{command}}$
+$$\\underbrace{\\overset{31}{0}000 \\, 0000 \\, 0000 \\, 0\\overset{18}{0}}\_{\\text{reserved}} \\,
+  \\underbrace{\\overset{17}{0}0 \\, 0000 \\, 0\\overset{10}{0}}\_{\\text{block}} \\,
+  \\underbrace{\\overset{ 9}{0}0 \\, 0\\overset{6}{0}}\_{\\text{disk}} \\,
+  \\underbrace{\\overset{ 5}{0}0 \\, 000\\overset{0}{0}}\_{\\text{command}}$$
 
 bits | width | field | description
 -|-|-|-
@@ -27,6 +30,8 @@ bits | width | field | description
   6-9 |  4 | disk ID  | 
 10-17 |  8 | block ID |
 18-31 | 14 | reserved | unused for now
+
+#### The command field
 
 The command field is one of the following commands. (They are declared as type `enum` in header file `jbod.h`).
 
@@ -40,6 +45,8 @@ command | description | example
 `JBOD_WRITE_BLOCK`   | Writes the data in buffer `block` into the block in the current I/O position. After this operation is complete, $\\texttt{current\\_block\\_ID}$ is incremented by $1$ and so the next operation will occur on the next block of the current disk. When the command field of `op` is set to this command, the JBOD driver ignores all other fields. | `jbod_operation(JBOD_WRITE_BLOCK, write_buffer)`
 
 Thank you for your purchase!"
+
+#### The implementation
 
 After you finish your onboarding session and enjoyed a free lunch with your new colleagues, you receive the following email from the team manager.
 
