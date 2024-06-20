@@ -43,9 +43,9 @@ int mdadm_unmount (void) {
 
 // auxiliary function - recompute location in JBOD in terms of disk, block, and specific address
 void addr (uint32_t *start_addr, uint32_t *disk, uint32_t *blck, uint32_t *ofst) {
-  *disk = *start_addr / DISK_SIZE;
-  *blck = *start_addr % DISK_SIZE / BLCK_SIZE;
-  *ofst = *start_addr % DISK_SIZE % BLCK_SIZE;
+  *disk = *start_addr / DISK_SIZE;               // 0..(2^20 - 1) / 2^16 = 0..(2^4 - 1) --> a number between 0 and  16
+  *blck = *start_addr % DISK_SIZE / BLCK_SIZE;   // 0..(2^16 - 1) /  2^8 = 0..(2^8 - 1) --> a number between 0 and 255
+  *ofst = *start_addr % DISK_SIZE % BLCK_SIZE;   // 0..( 2^8 - 1)                       --> a number between 0 and 255
 }
 
 // read `read_len` bytes into `read_buf` starting at address `start_addr`
