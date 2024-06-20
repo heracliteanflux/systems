@@ -10,6 +10,8 @@ The interface to the JBOD is a device driver with the function
 
 ```c
 int jbod_operation (uint32_t op, uint8_t *block)
+//                  ^^^^^^^^^^^                             32-bit unsigned int
+//                               ^^^^^^^^^^^^^^   pointer to 8-bit unsigned int
 ```
 
 which returns $0$ on success and $-1$ on failure. It accepts two parameters: an operation via parameter `op` the format of which is described below and a pointer to a buffer via parameter `block`.
@@ -43,48 +45,59 @@ After you finish your onboarding session and enjoyed a free lunch with your new 
 
 "Welcome to the team! Here's your first task. You will work on integrating the JBOD into our existing storage system. For the next week or so, you will implement one of the functionalities of the `mdadm` Linux utility, which is an acronym for "multiple disk and device administration": a tool for doing cool tricks with multiple disks! In particular, you will implement a linear device. A linear device makes multiple disks appear as one large disk to the operating system. In our case, we will make $16$ $64 \\,\\,\\text{KB}$-disks appear as one $4 \\,\\,\\text{MB}$-disk to the operating system.
 
-Below is described the specific functionality that must be implemented.
+Described below is the specific functionality that must be implemented.
 
 File `jbod.h`:
 
 ```h
 // enter the correct values for the following macros
-#define DISKS     //     16 disk
+#define DISK      //     16 disks
 #define BLCK_SIZE //    256 B per block
-#define BLCK_DISK //    256 block per disk
+#define BLCK_DISK //    256 blocks per disk
 #define DISK_SIZE // 65,536 B per disk
 ```
 
 File `mdadm.c`:
 
 ```c
-/*   mount the linear device
- *     return 1 on success and -1 on failure
- *     calling this function a second time without calling `mdadm_unmount` should fail
- */
+// mount the linear device
 int mdadm_mount   (void) {
-  // your implementation
-  if (jbod_operation() == 0) return  1; // success
-  else                       return -1; // failure - jbod_operation == -1
+  /* YOUR IMPLEMENTATION
+   *
+   * calling this function a second time without calling function `mdadm_unmount` in the interim must fail
+   * this function returns 1 on success and -1 on failure
+   */
+  if (jbod_operation(...) == 0) return  1; // success
+  else                          return -1; // failure --> jbod_operation == -1, or another non-zero value
 }
 
-/* unmount the linear device
- *     return 1 on success and -1 on failure
- *     calling this function a second time without calling `mdadm_mount`   should fail
- */
+// unmount the linear device
 int mdadm_unmount (void) {
-  // your implementation
-  if (jbod_operation() == 0) return  1; // success
-  else                       return -1; // failure - jbod_operation == -1
+  /* YOUR IMPLEMENTATION
+   *
+   * calling this function a second time without calling function `mdadm_mount` in the interim must fail
+   * this function returns 1 on success and -1 on failure
+   */
+  if (jbod_operation(...) == 0) return  1; // success
+  else                          return -1; // failure --> jbod_operation == -1, or another non-zero value
 }
 
-/* read LEN bytes into BUF starting at address ADDR
- *   reading from an out-of-bounds address should fail
- *   a read larger than 1,024 bytes should fail (i.e., LEN <= 1024)
- */
+// read LEN bytes into BUF starting at address ADDR
 int mdadm_read (uint32_t addr, uint32_t LEN, uint8_t *BUF) {
+  /*            ^^^^^^^^^^^^^                                         32-bit unsigned int
+   *                           ^^^^^^^^^^^^                           32-bit unsigned int
+   *                                         ^^^^^^^^^^^^   pointer to 8-bit unsigned int
+   *
+   * YOUR IMPLEMENTATION
+   *
+   * reading from an out-of-bounds address must fail
+   * a read larger than 1,024 bytes should fail (i.e., LEN <= 1024)
+   * there are some other requirements as well
+   * this function returns LEN on success and -1 on failure
+   */
   if (...) return -1;
-  // your implementation
+  if (...) return -1;
+  ...
   return LEN;
 }
 ```
@@ -98,9 +111,9 @@ You are ready to make an impact in the company! You spend the afternoon with you
   jbod.o    the object file containing the JBOD driver
  mdadm.h    the header file that lists the functions that are to be implemented
  mdadm.c    the implementation of the mdadm functions
-tester.h    the tester header file
+tester.h
 tester.c    unit tests for the functions that are to be implemented; this file compiles into the executable `tester` which when run will determine whether the implementation is satisfactory
-  util.h    utility functions that JBOD (and unit tests) relies on
+  util.h
   util.c    utility functions that JBOD (and unit tests) relies on
 Makefile    used by utility `make` to compile and build the executable `tester`
 ```
