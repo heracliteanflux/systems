@@ -2,7 +2,7 @@
 
 Today is the first day of your internship at a cryptocurrency startup. The marketing team has decided that they want to differentiate their product by emphasizing security. The startup has just received a shipment of 16 military-grade nuclear bomb-proof hard disks which will replace the existing commercial-grade hard disks for the purposes of storing critical user data in the form of cryptocurrency wallets. The company that manufactured the disks focuses on physical security but didn't invest in the software, and provided their product as just a bunch of disks (JBOD). JBOD is a storage architecture consisting of numerous disks inside a single enclosure. The user manual that came with the product specifies the following.
 
-"Thank you for purchasing our military-grade, nuclear bomb-proof hard disk product built with the same patented technology that's used by NASA. Each drive consists of 256 storage blocks where a storage block consists of 256 bytes. Thus each disk contains 65,536 bytes of storage.
+"Thank you for purchasing our military-grade, nuclear bomb-proof hard disk product built with the same patented technology that's used by NASA. Each drive consists of $256$ storage blocks where a storage block consists of $256$ bytes. Thus each disk contains $65,536$ bytes of storage.
 
 $$
 \begin{align}
@@ -13,7 +13,7 @@ $$
 }_{65,536 \\,\\,\text{B per disk}}
 &= 1,048,576 \\,\\,\text{B} \\
 \\underset{2^4}{16} \\,\\,\text{disks}\\,\\, \times
-\\underset{2^6}{64} \\,\\,\\underset{2^{10}}{\text{KB}} \text{per disk}
+\\underset{2^6}{64} \\,\\,\\underset{2^{10}}{\text{KB}} \\,\\,\text{per disk}
 &= 1 \\,\\,\\underset{2^{20}}{\text{MB}} \\
 \end  {align}
 $$
@@ -29,14 +29,9 @@ int jbod_operation (uint32_t op, uint8_t *block) {
 }
 ```
 
-#### The format of parameter `op`
 
-$$
-\\underbrace{\\overset{31}{0}000 \\, 0000 \\, 0000 \\, 0\\overset{18}{0}}\_{\\text{reserved}} \\,
-\\underbrace{\\overset{17}{0}0 \\, 0000 \\, 0\\overset{10}{0}}\_{\\text{block}} \\,
-\\underbrace{\\overset{ 9}{0}0 \\, 0\\overset{6}{0}}\_{\\text{disk}} \\,
-\\underbrace{\\overset{ 5}{0}0 \\, 000\\overset{0}{0}}\_{\\text{command}}
-$$
+
+### The format of parameter `op`
 
 bits | width | field | description
 -|-|-|-
@@ -45,7 +40,16 @@ bits | width | field | description
 10-17 |  8 | block ID |
 18-31 | 14 | reserved | unused for now
 
-#### The command field
+$$
+\\underbrace{\\overset{31}{0}000 \\, 0000 \\, 0000 \\, 0\\overset{18}{0}}\_{\\text{reserved}} \\,
+\\underbrace{\\overset{17}{0}0 \\, 0000 \\, 0\\overset{10}{0}}\_{\\text{block}} \\,
+\\underbrace{\\overset{ 9}{0}0 \\, 0\\overset{6}{0}}\_{\\text{disk}} \\,
+\\underbrace{\\overset{ 5}{0}0 \\, 000\\overset{0}{0}}\_{\\text{command}}
+$$
+
+
+
+### The command field
 
 The command field is one of the following commands. (They are declared as type `enum` in header file `jbod.h`).
 
@@ -60,15 +64,15 @@ command | description | example
 
 Thank you for your purchase!"
 
-#### The implementation
+
+
+### The implementation
 
 After you finish your onboarding session and enjoyed a free lunch with your new colleagues, you receive the following email from the team manager.
 
-"Welcome to the team! Here's your first task. You will work on integrating the JBOD into our existing storage system. For the next week or so, you will implement one of the functionalities of the `mdadm` Linux utility, which is an acronym for "multiple disk and device administration": a tool for doing cool tricks with multiple disks! In particular, you will implement a linear device. A linear device makes multiple disks appear as one large disk to the operating system. In our case, we will make $16$ $64 \\,\\,\\text{KB}$-disks appear as one $4 \\,\\,\\text{MB}$-disk to the operating system.
+"Welcome to the team! Here's your first task. You will work on integrating the JBOD into our existing storage system. For the next week or so, you will implement one of the functionalities of the `mdadm` Linux utility, which is an acronym for "multiple disk and device administration": a tool for doing cool tricks with multiple disks! In particular, you will implement a ***linear device***. A linear device makes multiple disks appear as one large disk to the operating system. In our case, we will make $16$ $64 \\,\\,\\text{KB}$ disks appear as one $1 \\,\\,\\text{MB}$ disk to the operating system. Described below is the specific functionality that must be implemented.
 
-Described below is the specific functionality that must be implemented.
-
-File `jbod.h`:
+#### File `jbod.h`:
 
 ```h
 // enter the correct values for the following macros
@@ -78,7 +82,7 @@ File `jbod.h`:
 #define DISK_SIZE // 65,536 B per disk
 ```
 
-File `mdadm.c`:
+#### File `mdadm.c`:
 
 ```c
 // mount the linear device
