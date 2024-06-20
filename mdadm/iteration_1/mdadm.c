@@ -29,7 +29,7 @@ int mdadm_mount (void) {
   uint32_t opcode = op(IGND, IGND, IGND,   JBOD_MOUNT); // otherwise, proceed with   mount
   int jbod_result = jbod_operation(opcode, NULL);
   if (jbod_result == 0) { is_mounted  = 1; return  1; }
-  else                  {                  return -1; }
+  else                                     return -1;
 }
 
 // unmount the linear device
@@ -38,7 +38,7 @@ int mdadm_unmount (void) {
   uint32_t opcode = op(IGND, IGND, IGND, JBOD_UNMOUNT); // otherwise, proceed with unmount
   int jbod_result = jbod_operation(opcode, NULL);
   if (jbod_result == 0) { is_mounted  = 0; return  1; }
-  else                  {                  return -1; }
+  else                                     return -1;
 }
 
 // auxiliary function - recompute location in JBOD in terms of disk, block, and specific address
