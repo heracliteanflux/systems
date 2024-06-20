@@ -17,31 +17,38 @@ const int MAX_RDLEN     = BLCK_SIZE * 4;            //     1,024 B ( 1 KB)
 const int IGND          = 0;
       int is_mounted    = 0;
 
+// auxiliary function - construct a 32-bit operation
 uint32_t op (uint32_t rsvd, uint32_t blck, uint32_t disk, uint32_t cmnd) {
   return              rsvd << 18   | blck << 10   | disk <<  6   | cmnd;
   //        xxxx xxxx xxxx xxxx xx | xx xxxx xx   | xx xx        | xx xxxx
 }
 
+//   mount the linear device
 int mdadm_mount (void) {
-  uint32_t opcode = op(IGND, IGND, IGND,   JBOD_MOUNT);
+  if                     (is_mounted == 1) return -1;   // if JBOD is already   mounted then fail this attempt to   mount
+  uint32_t opcode = op(IGND, IGND, IGND,   JBOD_MOUNT); // otherwise, proceed with   mount
   int jbod_result = jbod_operation(opcode, NULL);
-  if (jbod_result == 0) { is_mounted = 1; return  1; }
-  else                  {                 return -1; }
+  if (jbod_result == 0) { is_mounted  = 1; return  1; }
+  else                  {                  return -1; }
 }
 
+// unmount the linear device
 int mdadm_unmount (void) {
-  uint32_t opcode = op(IGND, IGND, IGND, JBOD_UNMOUNT);
+  if                     (is_mounted == 0) return -1;   // if JBOD is already unmounted then fail this attempt to unmount
+  uint32_t opcode = op(IGND, IGND, IGND, JBOD_UNMOUNT); // otherwise, proceed with unmount
   int jbod_result = jbod_operation(opcode, NULL);
-  if (jbod_result == 0) { is_mounted = 0; return  1; }
-  else                  {                 return -1; }
+  if (jbod_result == 0) { is_mounted  = 0; return  1; }
+  else                  {                  return -1; }
 }
 
+// auxiliary function - recompute location in JBOD in terms of disk, block, and specific address
 void addr (uint32_t *start_addr, uint32_t *disk, uint32_t *blck, uint32_t *ofst) {
   *disk = *start_addr / DISK_SIZE;
   *blck = *start_addr % DISK_SIZE / BLCK_SIZE;
   *ofst = *start_addr % DISK_SIZE % BLCK_SIZE;
 }
 
+// read `read_len` bytes into `read_buf` starting at address `start_addr`
 int mdadm_read(uint32_t start_addr, uint32_t read_len, uint8_t *read_buf)  {
   uint32_t disk;
   uint32_t blck;
