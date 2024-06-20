@@ -90,3 +90,17 @@ int mdadm_read (uint32_t addr, uint32_t LEN, uint8_t *BUF) {
 ```
 
 Good luck!"
+
+You are ready to make an impact in the company! You spend the afternoon with your mentor who goes through the directory structure and the development procedure with you.
+
+```txt
+  jbod.h    JBOD interface, the constants defined here are used in the implementation
+  jbod.o    the object file containing the JBOD driver
+ mdadm.h    the header file that lists the functions that are to be implemented
+ mdadm.c    the implementation of the mdadm functions
+tester.h    the tester header file
+tester.c    unit tests for the functions that are to be implemented; this file compiles into the executable `tester` which when run will determine whether the implementation is satisfactory
+  util.h    utility functions that JBOD (and unit tests) relies on
+  util.c    utility functions that JBOD (and unit tests) relies on
+Makefile    used by utility `make` to compile and build the executable `tester`
+```
