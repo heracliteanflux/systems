@@ -109,10 +109,10 @@ Recommended workflow:
 1. update file `jbod.h` with the appropriate macro values
 2. edit the name of file `jbod.o` according to the architecture of the machine being used to test the implementation: in particular, if you are using Apple Silicon (M1/2/3) then remove file `jbod.o` and rename file `jbod-m1.o` to `jbod.o`.
 3. Repeat the following until all unit tests are passed:
-  1. implement functionality in file `mdadm.c`
-  2. `make clean`
-  3. `make`
-  4. `./tester`
-  5. commit and push
+    1. implement functionality in file `mdadm.c`
+    2. `make clean`
+    3. `make`
+    4. `./tester`
+    5. commit and push
 
   It may be helpful to check the return value of function `jbod_operation` to determine whether an operation was successful. Remember that if the JBOD isn't initially mounted then all other read operations will fail.
