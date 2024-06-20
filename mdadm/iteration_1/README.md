@@ -5,7 +5,7 @@ Today is the first day of your internship at a cryptocurrency startup. The marke
 "Thank you for purchasing our military-grade, nuclear bomb-proof hard disk product built with the same patented technology that's used by NASA. Each drive consists of 256 storage blocks where a storage block consists of 256 bytes. Thus each disk contains 65,536 bytes of storage.
 
 $$
-16 \\,\\,\text{disks}\\,\\, \times 
+16 \\,\\,\\text{disks}\\,\\, \times 
 \\underbrace{
 256 \\,\\,\text{blocks per disk}\\,\\, \times 
 256 \\,\\,\text{B per block}
