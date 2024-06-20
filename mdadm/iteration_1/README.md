@@ -4,12 +4,14 @@ Today is the first day of your internship at a cryptocurrency startup. The marke
 
 "Thank you for purchasing our military-grade, nuclear bomb-proof hard disk product built with the same patented technology that's used by NASA. Each drive consists of 256 storage blocks where a storage block consists of 256 bytes. Thus each disk contains 65,536 bytes of storage.
 
-$$16 \\,\\,\text{disks}\\,\\, \times 
+$$
+16 \\,\\,\text{disks}\\,\\, \times 
 \\underbrace{
 256 \\,\\,\text{blocks per disk}\\,\\, \times 
 256 \\,\\,\text{B per block}
 }\_{65,536 \\,\\,\text{B per disk}}
-= 1,048,576 \\,\\,\text{B}$$
+= 1,048,576 \\,\\,\text{B}
+$$
 
 The interface to the JBOD is a device driver with the function `jbod_operation` which returns $0$ on success and $-1$ on failure. It accepts two parameters: an operation via parameter `op` the format of which is described below and a pointer to a buffer via parameter `block`.
 
