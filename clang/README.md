@@ -13,8 +13,21 @@ Tools and Technologies
 
 ### YouTube
 
+Chris Kanich
+* [ [y](https://www.youtube.com/watch?v=85T_ZaT8EUI) ] `12-02-2020` "what's the difference between processes, threads, and io multiplexing?"
+* [ [y](https://www.youtube.com/watch?v=XXfdzwEsxFk) ] `11-17-2020` "The Linux socket API explained".
+* [ [y](https://www.youtube.com/watch?v=8hVLcyBkSXY) ] `11-03-2020` "understanding mmap, the workhorse behind keeping memory access efficient in linux".
+* [ [y](https://www.youtube.com/watch?v=rW_NV6rf0rM) ] `10-08-2020` "What's behind a file descriptor in Linux? Also, i/o redirection with dup2.".
+* [ [y](https://www.youtube.com/watch?v=ayMPFUGE_b4) ] `10-08-2020` "Interacting with files in Linux".
+* [ [y](https://www.youtube.com/watch?v=RU0ULe2f6hI) ] `09-30-2020` "Signal handling in Linux".
+* [ [y](https://www.youtube.com/watch?v=uRYyj8tcDTE) ] `09-23-2020` "Moving beyond fork() for process creation in Linux".
+* [ [y](https://www.youtube.com/watch?v=WkuKhLYtUHw) ] `09-16-2020` "Introduction to Processes in Linux".
+* [ [y](https://www.youtube.com/watch?v=E804eTETaQs) ] `09-02-2020` "Linux Executable Symbol Relocation Explained".
+* [ [y](https://www.youtube.com/watch?v=6XVUIeAaROU) ] `09-01-2020` "How do linkers resolve symbols? Systems Programming CS Lecture".
+
 freeCodeCamp
-* [ [y](https://www.youtube.com/watch?v=KJgsSFOSQv0) ] `08-15-2018` freeCodeCamp. "C Programming Tutorial for Beginners". YouTube.
+* [ [y](https://www.youtube.com/watch?v=j-_s8f5K30I) ] `08-18-2022` "Dr. Chuck reads C Programming (the classic book by Kernigan and Ritchie)"
+* [ [y](https://www.youtube.com/watch?v=KJgsSFOSQv0) ] `08-15-2018` "C Programming Tutorial for Beginners". YouTube.
 
 Jacob Sorber
 * [ [y](https://www.youtube.com/watch?v=yN6EGfv5Dew) ] `06-03-2023`. "How to get an IP address from a host name? (Example in C)".
@@ -73,12 +86,16 @@ Jacob Sorber
 * [ [w](https://en.wikipedia.org/wiki/Data_segment) ] Data Segment
 * [ [w](https://en.wikipedia.org/wiki/Directive_(programming)) ] Directive
 * [ [w](https://en.wikipedia.org/wiki/Include_directive) ] Include Directive
+* [ [w](https://en.wikipedia.org/wiki/Instruction_scheduling) ] Instruction Scheduling
+* [ [w](https://en.wikipedia.org/wiki/Linker_(computing)) ] Linker
 * [ [w](https://en.wikipedia.org/wiki/Loader_(computing)) ] Loader
+* [ [w](https://en.wikipedia.org/wiki/Make_(software)) ] Make
 * [ [w](https://en.wikipedia.org/wiki/Memory_address) ] Memory Address
 * [ [w](https://en.wikipedia.org/wiki/Object_file) ] Object File
 * [ [w](https://en.wikipedia.org/wiki/Pointer_(computer_programming)) ] Pointer
 * [ [w](https://en.wikipedia.org/wiki/Directive_(programming)) ] Pragma
 * [ [w](https://en.wikipedia.org/wiki/Printf) ] `printf`
+* [ [w](https://en.wikipedia.org/wiki/Reference_(computer_science)) ] Reference
 * [ [w](https://en.wikipedia.org/wiki/Relocation_(computing)) ] Relocation
 * [ [w](https://en.wikipedia.org/wiki/Scanf) ] `scanf`
 * [ [w](https://en.wikipedia.org/wiki/Sizeof) ] `sizeof`
