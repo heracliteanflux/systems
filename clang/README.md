@@ -11,6 +11,8 @@ Tools and Technologies
 * [ [h](https://valgrind.org/) ][ [w](https://en.wikipedia.org/wiki/Valgrind) ] Valgrind
 * [ [h](https://www.virtualbox.org/) ][ w ] VirtualBox
 
+[ [h](https://www.cc4e.com/) ] C Programming for Everybody
+
 ### YouTube
 
 Chris Kanich
@@ -26,8 +28,9 @@ Chris Kanich
 * [ [y](https://www.youtube.com/watch?v=6XVUIeAaROU) ] `09-01-2020` "How do linkers resolve symbols? Systems Programming CS Lecture".
 
 freeCodeCamp
-* [ [y](https://www.youtube.com/watch?v=j-_s8f5K30I) ] `08-18-2022` "Dr. Chuck reads C Programming (the classic book by Kernigan and Ritchie)"
-* [ [y](https://www.youtube.com/watch?v=KJgsSFOSQv0) ] `08-15-2018` "C Programming Tutorial for Beginners". YouTube.
+* [ [y](https://www.youtube.com/watch?v=PaPN51Mm5qQ) ] `05-29-2024` "Learn C Programming and OOP with Dr. Chuck [feat. classic book by Kernighan and Ritchie]".
+* [ [y](https://www.youtube.com/watch?v=j-_s8f5K30I) ] `08-18-2022` "Dr. Chuck reads C Programming (the classic book by Kernigan and Ritchie)".
+* [ [y](https://www.youtube.com/watch?v=KJgsSFOSQv0) ] `08-15-2018` "C Programming Tutorial for Beginners".
 
 Jacob Sorber
 * [ [y](https://www.youtube.com/watch?v=yN6EGfv5Dew) ] `06-03-2023`. "How to get an IP address from a host name? (Example in C)".
@@ -44,6 +47,9 @@ Jacob Sorber
 * [ [y](https://www.youtube.com/watch?v=1jv428xKsRg) ] `12-04-2018`. "Socket servers can get client addresses. (accept, inet_ntop)".
 * [ [y](https://www.youtube.com/watch?v=esXw4bdaZkc) ] `11-20-2018`. "Program your own web server in C. (sockets)".
 * [ [y](https://www.youtube.com/watch?v=bdIiTxtMaKA) ] `10-12-2018`. "How to build a web client? (sockets)".
+
+More
+* [ [y](https://www.youtube.com/watch?v=d0gS5TXarXc) ] `04-11-2024` kimylamp. "Signals. I spent 2 years to understand this part.".
 
 ## Texts
 
@@ -68,8 +74,10 @@ Jacob Sorber
 
 ## Terms
 
+* [ [w](https://en.wikipedia.org/wiki/Address_space) ] Address Space
 * [ [w](https://en.wikipedia.org/wiki/ANSI_C) ] ANSI C
 * [ [w](https://en.wikipedia.org/wiki/Bounds_checking) ] Bounds Checking
+* [ [w](https://en.wikipedia.org/wiki/.bss) ] BSS (Block Starting Symbol) Segment
 * [ [w](https://en.wikipedia.org/wiki/C11_(C_standard_revision)) ] C11
 * [ [w](https://en.wikipedia.org/wiki/C17_(C_standard_revision)) ] C17
 * [ [w](https://en.wikipedia.org/wiki/C23_(C_standard_revision)) ] C23
@@ -81,16 +89,21 @@ Jacob Sorber
 * [ [w](https://en.wikipedia.org/wiki/C_(programming_language)) ] C
 * [ [w](https://en.wikipedia.org/wiki/C_standard_library) ] C Standard Library
 * [ [w](https://en.wikipedia.org/wiki/C_syntax) ] C Syntax
+* [ [w](https://en.wikipedia.org/wiki/Call_stack) ] Call Stack
 * [ [w](https://en.wikipedia.org/wiki/Checksum) ] Checksum
-* [ [w](https://en.wikipedia.org/wiki/Code_segment) ] Code Segment
+* [ [w](https://en.wikipedia.org/wiki/Code_segment) ] Code/Text Segment
 * [ [w](https://en.wikipedia.org/wiki/Data_segment) ] Data Segment
+* [ [w](https://en.wikipedia.org/wiki/Device_driver) ] Device Driver
 * [ [w](https://en.wikipedia.org/wiki/Directive_(programming)) ] Directive
 * [ [w](https://en.wikipedia.org/wiki/Include_directive) ] Include Directive
 * [ [w](https://en.wikipedia.org/wiki/Instruction_scheduling) ] Instruction Scheduling
+* [ [w](https://en.wikipedia.org/wiki/Interrupt) ] Interrupt
+* [ [w](https://en.wikipedia.org/wiki/Interrupt_handler) ] Interrupt Handler
 * [ [w](https://en.wikipedia.org/wiki/Linker_(computing)) ] Linker
 * [ [w](https://en.wikipedia.org/wiki/Loader_(computing)) ] Loader
 * [ [w](https://en.wikipedia.org/wiki/Make_(software)) ] Make
 * [ [w](https://en.wikipedia.org/wiki/Memory_address) ] Memory Address
+* [ [w](https://en.wikipedia.org/wiki/Memory_management) ] Memory Management
 * [ [w](https://en.wikipedia.org/wiki/Object_file) ] Object File
 * [ [w](https://en.wikipedia.org/wiki/Pointer_(computer_programming)) ] Pointer
 * [ [w](https://en.wikipedia.org/wiki/Directive_(programming)) ] Pragma
@@ -98,7 +111,11 @@ Jacob Sorber
 * [ [w](https://en.wikipedia.org/wiki/Reference_(computer_science)) ] Reference
 * [ [w](https://en.wikipedia.org/wiki/Relocation_(computing)) ] Relocation
 * [ [w](https://en.wikipedia.org/wiki/Scanf) ] `scanf`
+* [ [w](https://en.wikipedia.org/wiki/Shared_library) ] Shared Library
 * [ [w](https://en.wikipedia.org/wiki/Sizeof) ] `sizeof`
+* [ [w](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) ] Stack
+* [ [w](https://en.wikipedia.org/wiki/Stack-based_memory_allocation) ] Stack-Based Memory Allocation
 * [ [w](https://en.wikipedia.org/wiki/Struct_(C_programming_language)) ] `struct`
+* [ [w](https://en.wikipedia.org/wiki/Systems_programming) ] Systems Programming
 * [ [w](https://en.wikipedia.org/wiki/Typedef) ] `typedef`
 * [ [w](https://en.wikipedia.org/wiki/Union_type) ] Union
