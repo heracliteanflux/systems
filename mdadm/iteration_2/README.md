@@ -29,12 +29,14 @@ The cryptocurrency startup that you are interning at is concerned about the secu
 ```c
 // tell the storage system that writing is now allowed
 int mdadm_write_permission (void) {
-
+  /*    YOUR IMPLEMENTATION
+   */
 }
 
 // tell the storage system that writing is now not allowed
 int mdadm_revoke_write_permission (void) {
-
+  /*    YOUR IMPLEMENTATION
+   */
 }
 ```
 
@@ -42,7 +44,35 @@ Write permission must be enabled prior to writing to the storage system, and the
 
 The following commands are provided:
 
-```c
-JBOD_WRITE_PERMISSION   // set write permission to 1, allowed
+command | description | example
+-|-|-
+`JBOD_WRITE_PERMISSION` | Sets the write permission to $1$: write enabled. When the command field of `op` is set to this command, the JBOD driver ignores all other fields. Parameter `block` may be set to `NULL`. | `jbod_operation(JBOD_WRITE_PERMISSION, NULL)`
+`JBOD_REVOKE_WRITE_PERMISSION` | Sets the write permission to $-1$: write disabled. When the command field of `op` is set to this command, the JBOD driver ignores all other fields. Parameter `block` may be set to `NULL`. | `jbod_operation(JBOD_REVOKE_WRITE_PERMISSION, NULL)`
 
+The mdadm implementation is a layer just above the JBOD. The purpose of mdadm is to unify multiple disks under one storage system with a single address space. An application built on top of mdadm will issue a sequence of commands like the following:
+
+```txt
+MOUNT
+WRITE_PERMISSION
+a sequence of WRITES and READS issued at arbitrary addresses with arbitrary payloads
+UNMOUNT
+```
+
+In addition to the unit tests there are several trace files which contain the list of commands a system built on top of the mdadm implementation might issue. The unit test suite now includes functionality to replay the trace files; in particular, the suite of unit tests now has two modes of operation. Without any arguments, the utility will run the suite of unit tests:
+
+```c
+./tester
+```
+
+With the path name argument `-w` the test utility expects a path name that points to a trace file.
+
+```c
+./tester -w traces/simple-input   // simple-input, linear-input, random-input
+```
+
+```txt
+MOUNT
+WRITE_PERMIT
+WRITE 0 256 0        write to   address       0, for 256 B, each byte is 0
+READ 1006848 256 0   read  from address 1006848, for 256 B, ignore last arg
 ```
