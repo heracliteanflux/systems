@@ -1,12 +1,18 @@
-Your internship is going great. You have gained experience with C programming, you have experienced your first segmentation faults, and you've come out on top. You are brimming with confidence and ready to handle your next challenge. Your next job is to implement write functionality for mdadm and then thoroughly test your implementation. Specifically, you will implement the following function:
+# Iteration 2
+
+Your internship is going great. You have gained experience with C programming, you have experienced your first segmentation faults, and you've come out on top. You are brimming with confidence and ready to handle your next challenge.
+
+## Task
+
+Your next job is to implement write functionality for mdadm and then thoroughly test your implementation. Specifically, you will implement the following function:
 
 ```c
 // write `write_len` bytes from the user-supplied buffer `write_buf` to the storage system starting at address `start_addr`
-int mdadm_write (uint32_t start_addr, uint32_t write_len, const uint8_t write_buf) {
-  /*             ^^^^^^^^^^^^^^^^^^^                                               32-bit unsigned int
-   *                                  ^^^^^^^^^^^^^^^^^^                           32-bit unsigned int
-   *                                                      ^^^^^                    `write_buf` is an in-parameter, meaning that it is read-only
-   *                                                      ^^^^^^^^^^^^^^^^^^^^^^^  pointer to 8-bit unsigned int
+int mdadm_write (uint32_t start_addr, uint32_t write_len, const uint8_t *write_buf) {
+  /*             ^^^^^^^^^^^^^^^^^^^                                                32-bit unsigned int
+   *                                  ^^^^^^^^^^^^^^^^^^                            32-bit unsigned int
+   *                                                      ^^^^^                     `write_buf` is an in-parameter, meaning that it is read-only
+   *                                                      ^^^^^^^^^^^^^^^^^^^^^^^^  pointer to 8-bit unsigned int
    *
    * YOUR IMPLEMENTATION
    *
