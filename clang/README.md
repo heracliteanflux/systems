@@ -30,6 +30,7 @@ Chris Kanich
 freeCodeCamp
 * [ [y](https://www.youtube.com/watch?v=PaPN51Mm5qQ) ] `05-29-2024` "Learn C Programming and OOP with Dr. Chuck [feat. classic book by Kernighan and Ritchie]".
 * [ [y](https://www.youtube.com/watch?v=j-_s8f5K30I) ] `08-18-2022` "Dr. Chuck reads C Programming (the classic book by Kernigan and Ritchie)".
+* [ [y](https://www.youtube.com/watch?v=B31LgI4Y4DQ) ] `01-27-2021` "Data Structures - Full Course Using C and C++".
 * [ [y](https://www.youtube.com/watch?v=KJgsSFOSQv0) ] `08-15-2018` "C Programming Tutorial for Beginners".
 
 Jacob Sorber
@@ -67,8 +68,11 @@ More
 * Reese, Richard M. (2013). _Understanding and Using C Pointers: Core Techniques for Memory Management_. O’Reilly.
 * Sandler, Nora. (2023). _Writing a C Compiler: Build a Real Programming Language from Scratch_. [No Starch Press](https://nostarch.com/writing-c-compiler).
 * Seacord, Robert C. (2020). _Effective C: An Introduction to Professional C Programming_. [No Starch Press](https://nostarch.com/Effective_C).
+* `1997` Sedgewick, Robert. "Algorithms in C, Parts 1-4: Fundamentals, Data Structures, Sorting, Searching". 3e. Addison-Wesley Professional.
+* `2001` Sedgewick, Robert. "Algorithms in C, Part 5: Graph Algorithms". 3e. Addison-Wesley Professional.
 * [ [h](http://www.apuebook.com/) ][ [w](https://en.wikipedia.org/wiki/Advanced_Programming_in_the_Unix_Environment) ] Stevens, W. Richard & Stephen A. Rago. (2013). _Advanced Programming in the UNIX Environment_. 3e. Addison-Wesley Professional.
 * Szuhay, Jeff. (2020). _Learn C Programming: A beginner’s guide to learning C programming the easy and disciplined way_. Packt.
+* `1989` Tenenbaum, Aaron M.; Yedidyah Langsam; & Moshe J. Augenstein. "Data Structures Using C". Prentice Hall.
 * Van Der Linden, Peter. (1994). _Expert C Programming: Deep C Secrets_. Pearson.
 * Van Winkle, Lewis. (2019). _Hands-On Network Programming with C: Learn socket programming in C and write secure and optimized network code_. Packt.
 
@@ -92,6 +96,7 @@ More
 * [ [w](https://en.wikipedia.org/wiki/Call_stack) ] Call Stack
 * [ [w](https://en.wikipedia.org/wiki/Checksum) ] Checksum
 * [ [w](https://en.wikipedia.org/wiki/Code_segment) ] Code/Text Segment
+* [ [w](https://en.wikipedia.org/wiki/Row-_and_column-major_order) ] Column-Major Order
 * [ [w](https://en.wikipedia.org/wiki/Data_segment) ] Data Segment
 * [ [w](https://en.wikipedia.org/wiki/Device_driver) ] Device Driver
 * [ [w](https://en.wikipedia.org/wiki/Directive_(programming)) ] Directive
@@ -110,6 +115,7 @@ More
 * [ [w](https://en.wikipedia.org/wiki/Printf) ] `printf`
 * [ [w](https://en.wikipedia.org/wiki/Reference_(computer_science)) ] Reference
 * [ [w](https://en.wikipedia.org/wiki/Relocation_(computing)) ] Relocation
+* [ [w](https://en.wikipedia.org/wiki/Row-_and_column-major_order) ] Row-Major Order
 * [ [w](https://en.wikipedia.org/wiki/Scanf) ] `scanf`
 * [ [w](https://en.wikipedia.org/wiki/Shared_library) ] Shared Library
 * [ [w](https://en.wikipedia.org/wiki/Sizeof) ] `sizeof`
