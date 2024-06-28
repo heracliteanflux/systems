@@ -15,6 +15,7 @@
 const int DISK          = JBOD_NUM_DISKS;           //        16 disk
 const int BLCK_PER_DISK = JBOD_NUM_BLOCKS_PER_DISK; //       256 blck      per disk
 const int BLCK_SIZE     = JBOD_BLOCK_SIZE;          //       256 B         per blck
+//const int BLCK_SIZE     = 256;
 const int DISK_SIZE     = JBOD_DISK_SIZE;           //    65,536 B (64 KB) per disk
 const int JBOD_SIZE     = DISK_SIZE * DISK;         // 1,048,576 B ( 1 MB) per jbod
 const int MAX_RDLEN     = BLCK_SIZE * 4;            //     1,024 B ( 1 KB)
@@ -23,26 +24,61 @@ const int IGND          = 0;                        // mask
       int is_writabl    = 0;                        // not writable = 0, writable = 1
 
 
-// auxiliary function - construct a 32-bit operation
+/********************************************************************************
+ *
+ *                    JBOD Auxiliary
+ *
+ ********************************************************************************/
+
+
+/* construct a 32-bit operation
+ *
+ * return
+ *   32-bit operation
+ */
 uint32_t op (uint32_t rsvd, uint32_t blck, uint32_t disk, uint32_t cmnd) {
   return              rsvd << 18   | blck << 10   | disk <<  6   | cmnd;
   //        xxxx xxxx xxxx xxxx xx | xx xxxx xx   | xx xx        | xx xxxx
 }
 
 
-// auxiliary function - recompute location in JBOD in terms of disk, block, and specific address
+// compute location in JBOD in terms of disk, blck, and ofst from beginning of block
 void addr (uint32_t *start_addr, uint32_t *disk, uint32_t *blck, uint32_t *ofst) {
-  *disk = *start_addr / DISK_SIZE;               // 0..(2^20 - 1) / 2^16 = 0..(2^4 - 1) --> a number between 0 and  16
-  *blck = *start_addr % DISK_SIZE / BLCK_SIZE;   // 0..(2^16 - 1) /  2^8 = 0..(2^8 - 1) --> a number between 0 and 255
-  *ofst = *start_addr % DISK_SIZE % BLCK_SIZE;   // 0..( 2^8 - 1)                       --> a number between 0 and 255
+  *disk = *start_addr / DISK_SIZE;             assert(0 <= *disk && *disk < DISK_SIZE);  // 0..(2^20 - 1) / 2^16 = 0..(2^4 - 1) --> a number between 0 and  15
+  *blck = *start_addr % DISK_SIZE / BLCK_SIZE; assert(0 <= *blck && *blck < BLCK_SIZE);  // 0..(2^16 - 1) /  2^8 = 0..(2^8 - 1) --> a number between 0 and 255
+  *ofst = *start_addr % DISK_SIZE % BLCK_SIZE; assert(0 <= *ofst && *ofst < BLCK_SIZE);  // 0..( 2^8 - 1)                       --> a number between 0 and 255
 }
 
 
-/*    mount the linear device
+/* input validation for read and write
  *
- *    return
- *        1 on succuss
- *       -1 on failure
+ * return
+ *   -1 on failure
+ *    1 on success
+ */
+int rdwt_validate (uint32_t start_addr, uint32_t rdwt_len, const uint8_t *rdwt_buf) {
+  if (!is_mounted)                                   return -1;   // JBOD must be mounted
+  if (!(0 <= start_addr && start_addr <  JBOD_SIZE)) return -1;   // 0 <= start_addr       <  1,048,576 (2^20)
+  if (!(0 <= rdwt_len   && rdwt_len   <= MAX_RDLEN)) return -1;   // 0 <= rdwt_len         <      1,024 (2^10)
+  if (!(     start_addr  + rdwt_len   <= JBOD_SIZE)) return -1;   // start_addr + rdwt_len <= 1,048,576 (2^10)
+  if (rdwt_buf == NULL  && rdwt_len   >  0)          return -1;
+
+  return 1;
+}
+
+
+/********************************************************************************
+ *
+ *                    JBOD
+ *
+ ********************************************************************************/
+
+
+/* mount the linear device
+ *
+ * return
+ *   -1 on failure
+ *    1 on succuss
  */
 int mdadm_mount (void) {
   if                     (is_mounted == 1) return -1;   // failure!   --> if JBOD is already   mounted then fail this attempt to   mount
@@ -58,11 +94,11 @@ int mdadm_mount (void) {
 // }
 
 
-/*    unmount the linear device
+/* unmount the linear device
  *
- *    return
- *        1 on succuss
- *       -1 on failure
+ * return
+ *   -1 on failure
+ *    1 on succuss
  */
 int mdadm_unmount (void) {
   if                     (is_mounted == 0) return -1;   // failure!   --> if JBOD is already unmounted then fail this attempt to unmount
@@ -73,11 +109,11 @@ int mdadm_unmount (void) {
 }
 
 
-/*    enable write
+/* enable write
  *
- *    return
- *        1 on succuss
- *       -1 on failure
+ * return
+ *   -1 on failure
+ *    1 on succuss
  */
 int mdadm_write_permission (void){
   if                     (is_writabl == 1) return -1;            // failure!   --> if JBOD is already writable then fail this attempt to enable write
@@ -88,11 +124,11 @@ int mdadm_write_permission (void){
 }
 
 
-/*    disable write
+/* disable write
  *
- *    return
- *        1 on succuss
- *       -1 on failure
+ * return
+ *   -1 on failure
+ *    1 on succuss
  */
 int mdadm_revoke_write_permission (void){
   if                     (is_writabl == 0) return -1;                   // failure!   --> if JBOD is already non writable then fail this attempt to disable write
@@ -103,104 +139,100 @@ int mdadm_revoke_write_permission (void){
 }
 
 
-/*    read `read_len` bytes into `read_buf` starting at address `start_addr`
+/* read `read_len` bytes into `read_buf` starting at address `start_addr`
  *
- *    return
- *        num bytes read on succuss
- *       -1              on failure
+ * return
+ *   -1              on failure
+ *    num bytes read on succuss
  */
 int mdadm_read(uint32_t start_addr, uint32_t read_len, uint8_t *read_buf)  {
-  uint32_t disk;
-  uint32_t blck;
-  uint32_t ofst;
+  uint32_t disk, // will hold a value 0.. 15 + 1
+           blck, //                   0..255
+           ofst; //                   0..255
 
   // input validation
-  if (!is_mounted)                                  return -1;   // JBOD must be mounted
-  if (!(0 <= start_addr && start_addr < JBOD_SIZE)) return -1;   // 0 <= start_addr < 1,048,576 (2^20)
-  if (!(0 <= read_len   && read_len  <= MAX_RDLEN)) return -1;   // 0 <= read_len   <     1,024 (2^10)
-  if (!(     start_addr  + read_len  <= JBOD_SIZE)) return -1;   // start_addr + read_len <= 1,048,576
-  if (read_buf == NULL && read_len > 0)             return -1;
+  if (rdwt_validate(start_addr, read_len, (const uint8_t *)read_buf) == -1) return -1;
 
-  // initialization - seek to correct disk and block of `start_addr`
-  addr(&start_addr, &disk, &blck, &ofst);
-  assert(jbod_operation(op(IGND, IGND, disk, JBOD_SEEK_TO_DISK),  NULL) == 0);
-  assert(jbod_operation(op(IGND, blck, IGND, JBOD_SEEK_TO_BLOCK), NULL) == 0);
+  // read operation
+  int    bytes_read = 0;
+  while (bytes_read < read_len) { // `read_len` must be at least 1
+    uint8_t buf[BLCK_SIZE];       // holds the full 256 B of the current blck
 
-  // read
-  int bytes_to_be_read = read_len;
-  int bytes_read       = 0;
-  while (bytes_to_be_read > 0) {                                                              // `read_len` must be at least 1
-    int chunk = bytes_to_be_read >= (BLCK_SIZE - ofst) ? BLCK_SIZE - ofst : bytes_to_be_read; // how many B to read? 256 - (0..255) = 1..256
+    // compute location in JBOD in terms of disk, blck, and ofst from beginning of blck
+    addr(&start_addr, &disk, &blck, &ofst);
 
-    // read operation
-    uint8_t buf[BLCK_SIZE];                                                  // 256-B buffer
+    // how many B to read?               256       - (0..255) = 1..256
+    int chunk = read_len - bytes_read >= BLCK_SIZE - ofst
+              ?                          BLCK_SIZE - ofst
+              : read_len - bytes_read;
+
+    // seek to correct disk and block of `start_addr`
+    assert(jbod_operation(op(IGND, IGND, disk, JBOD_SEEK_TO_DISK),  NULL) == 0);
+    assert(jbod_operation(op(IGND, blck, IGND, JBOD_SEEK_TO_BLOCK), NULL) == 0);
+
+    // read
     assert(jbod_operation(op(IGND, IGND, IGND, JBOD_READ_BLOCK), buf) == 0); // read entire block into `buf`
     memcpy(read_buf, &buf[ofst], chunk);                                     // read chunk of `buf` into `read_buf`
 
-    // post read operation
-    read_buf         += chunk;              // update pointer `read_buf`
-    bytes_to_be_read -= chunk;              // update        the number of bytes to be read
-    bytes_read       += chunk;              // keep track of the number of bytes       read
-    start_addr       += chunk;              // recompute location in JBOD
-    addr(&start_addr, &disk, &blck, &ofst); // recompute location in JBOD
-
-    //if      (disk >= 16) { assert(jbod_operation(op(IGND, IGND,    0, JBOD_SEEK_TO_DISK), NULL) == 0); }
-    if (blck ==  0) { assert(jbod_operation(op(IGND, IGND, disk, JBOD_SEEK_TO_DISK), NULL) == 0); } // if the updated blck value is 0 then seek to the next disk
+    // post read
+    read_buf   += chunk; // update pointer to read buffer
+    bytes_read += chunk; // update number of bytes read
+    start_addr += chunk; // update location in JBOD
   }
 
-  // successful read
+  // read operation successful
   assert(bytes_read == read_len);
   return bytes_read;
 }
 
 
-/*    write `write_len` bytes from `write_buf` into JBOD starting at address `start_addr`
+/* write `write_len` bytes from `write_buf` into JBOD starting at address `start_addr`
  *
- *    return
- *        num bytes written on succuss
- *       -1                 on failure
+ * return
+ *   -1                 on failure
+ *    num bytes written on succuss
  */
 int mdadm_write (uint32_t start_addr, uint32_t write_len, const uint8_t *write_buf) {
-  uint32_t disk;
-  uint32_t blck;
-  uint32_t ofst;
+  uint32_t disk, // will hold a value 0.. 15 + 1
+           blck, //                   0..255
+           ofst; //                   0..255
 
   // input validation
-  if (!is_mounted)                                  return -1;   // JBOD must be mounted
-  if (!is_writabl)                                  return -1;   // JBOD must be write enabled
-  if (!(0 <= start_addr && start_addr < JBOD_SIZE)) return -1;   // 0 <= start_addr < 1,048,576 (2^20)
-  if (!(0 <= write_len  && write_len <= MAX_RDLEN)) return -1;   // 0 <= write_len  <     1,024 (2^10)
-  if (!(     start_addr  + write_len <= JBOD_SIZE)) return -1;   // start_addr + write_len <= 1,048,576
-  if (write_buf == NULL && write_len  > 0)          return -1;
+  if (!is_writabl)                                           return -1; // JBOD must be write enabled
+  if (rdwt_validate(start_addr, write_len, write_buf) == -1) return -1;
 
-  // initialization - seek to correct disk and block of `start_addr`
-  addr(&start_addr, &disk, &blck, &ofst);
-  assert(jbod_operation(op(IGND, IGND, disk, JBOD_SEEK_TO_DISK),  NULL) == 0);
-  assert(jbod_operation(op(IGND, blck, IGND, JBOD_SEEK_TO_BLOCK), NULL) == 0);
+  // write operation
+  int    bytes_written = 0;
+  while (bytes_written < write_len) { // `write_len` must be at least 1
+    uint8_t buf[256];                 // holds the full 256 B of the current blck
 
-  // write
-  int bytes_to_be_written = write_len;
-  int bytes_written       = 0;
-  while (bytes_to_be_written > 0) {                                                                 // `read_len` must be at least 1
-    int chunk = bytes_to_be_written >= (BLCK_SIZE - ofst) ? BLCK_SIZE - ofst : bytes_to_be_written; // how many B to read? 256 - (0..255) = 1..256
+    // compute location in JBOD in terms of disk, blck, and ofst from beginning of blck
+    addr(&start_addr, &disk, &blck, &ofst);
 
-    // write operation
-    uint8_t buf[BLCK_SIZE];                                                   // 256-B buffer
+    // how many B to write?                  256       - (0..255) = 1..256
+    int chunk = write_len - bytes_written >= BLCK_SIZE - ofst
+              ?                              BLCK_SIZE - ofst
+              : write_len - bytes_written;
+
+    // read the current blck into a buf
+    assert(mdadm_read(start_addr - ofst, BLCK_SIZE, buf) == BLCK_SIZE);
+    //                ^^^^^^^^^^^^^^^^^                                 beginning of the current blck
+    //                                   ^^^^^^^^^          ^^^^^^^^^   all 256 B of the current blck
+    // the previous read seeked to the next blck upon completion, so re-seek to the current blck
+    assert(jbod_operation(op(IGND, IGND, disk, JBOD_SEEK_TO_DISK),  NULL) == 0);
+    assert(jbod_operation(op(IGND, blck, IGND, JBOD_SEEK_TO_BLOCK), NULL) == 0);
+
+    // write
     memcpy(&buf[ofst], write_buf, chunk);                                     // write chunk of `write_buf` into `buf`
     assert(jbod_operation(op(IGND, IGND, IGND, JBOD_WRITE_BLOCK), buf) == 0); // write entire `buf` into block
 
-    // post write operation
-    write_buf           += chunk;              // update pointer `read_buf`
-    bytes_to_be_written -= chunk;              // update        the number of bytes to be read
-    bytes_written       += chunk;              // keep track of the number of bytes       read
-    start_addr          += chunk;              // recompute location in JBOD
-    addr(&start_addr, &disk, &blck, &ofst); // recompute location in JBOD
-
-    //if      (disk >= 16) { assert(jbod_operation(op(IGND, IGND,    0, JBOD_SEEK_TO_DISK), NULL) == 0); }
-    if (blck ==  0) { assert(jbod_operation(op(IGND, IGND, disk, JBOD_SEEK_TO_DISK), NULL) == 0); } // if the updated blck value is 0 then seek to the next disk
+    // post write
+    write_buf     += chunk; // update pointer to write buffer
+    bytes_written += chunk; // update number of bytes written
+    start_addr    += chunk; // update location in JBOD
   }
 
-  // successful write
+  // write operation successful
   assert(bytes_written == write_len);
   return bytes_written;
 }
