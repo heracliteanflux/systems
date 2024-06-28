@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+##############################
+#
+#     BASH-SPECIFIC   ENV
+#
+##############################
+
+HISTCONTROL=ignoreboth # https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-HISTCONTROL

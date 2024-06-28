@@ -1,0 +1,5 @@
+channels:
+- conda-forge
+solver: libmamba
+channel_priority: strict
+show_channel_urls: true

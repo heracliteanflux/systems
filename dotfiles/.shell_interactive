@@ -1,0 +1,188 @@
+############################################################
+#
+#          SHELL-AGNOSTIC   INTERACTIVE
+#
+############################################################
+
+
+
+
+
+
+
+
+
+
+############################################################
+#
+#     MATH AND DATA
+#
+############################################################
+
+alias rand='echo `jot -r 1 0 1000`/1000 | bc -l | cut -c 1-4 '
+
+
+
+
+
+############################################################
+#
+#     MISCELLANEOUS
+#
+############################################################
+
+function cheat {
+  [[ $# -ne 1 ]] && echo 'Usage: cheat <command>' || curl "https://cheat.sh/$1"
+}
+
+
+
+
+
+############################################################
+#
+#     ALIASES
+#
+############################################################
+# navigate the file system
+alias    ...='cd ../../..'
+alias   ....='cd ../../../..'
+alias  .....='cd ../../../../..'
+alias ......='cd ../../../../../..'
+
+alias     up='cd ..'
+alias    upp='cd ../..'
+alias   uppp='cd ../../..'
+alias  upppp='cd ../../../..'
+alias uppppp='cd ../../../../..'
+
+alias   cdhm="cd $HOME/.home && ls -Al "
+alias  cdssh="cd $HOME/.ssh  && ls -Al "
+
+alias  cat='bat -p '
+alias cata='bat -pA '
+alias   cp='cp -v '
+alias dirs='dirs -v | head -n10 '
+alias mann='cheat '
+alias   md='mkdir -pv '
+alias   mv='mv -v '
+alias path="echo $PATH | tr : '\n' "
+alias   rd='rmdir -v '
+alias   rm='rm -iv '
+alias  tmp="temp_dir=$(mktemp -d) && cd \"$temp_dir\""
+
+#rm () {
+#  echo $'DANGEROUS - using \'mv ~/.Trash\' instead'
+#
+#  for arg in "$@" ; do
+#    if [[ -f "$arg" ]] ; then
+#      mv "$arg" ~/.Trash
+#    fi
+#  done
+#}
+
+# directory contents
+#alias        l='ls -AeFGh@o '
+#alias        l='ls -AeFGhls '
+#alias       ll='ls -AGho '
+
+alias    l='ls -AhlF '
+alias   lt='ls -AhlFt '   # sort by time, newest  first
+alias   ls='ls -AhlFS '   # sort by size, largest first
+
+alias  ll='lsd -AFl  -I .DS_Store -I .ipynb_checkpoints -I .localized -I .vscode -I __pycache__ -I desktop.ini -I \\$RECYCLE.BIN '   #
+alias llt='lsd -AFlt -I .DS_Store -I .ipynb_checkpoints -I .localized -I .vscode -I __pycache__ -I desktop.ini -I \\$RECYCLE.BIN '   # sort by time
+alias lls='lsd -AFlS -I .DS_Store -I .ipynb_checkpoints -I .localized -I .vscode -I __pycache__ -I desktop.ini -I \\$RECYCLE.BIN '   # sort by size
+alias llx='lsd -AFlX -I .DS_Store -I .ipynb_checkpoints -I .localized -I .vscode -I __pycache__ -I desktop.ini -I \\$RECYCLE.BIN '   # sort by extension
+
+alias  t="tree -a -I '.DS_Store|.git|.ipynb_checkpoints|.localized|.vscode|__pycache__|desktop.ini|\\\$RECYCLE.BIN' --filesfirst "
+alias t1='tree . -aL 1 '
+alias t2='tree . -aL 2 '
+alias t3='tree . -aL 3 '
+alias t4='tree . -aL 4 '
+
+alias e="
+exa -aFgHlS \
+-I=\".DS_Store|.ipynb_checkpoints|.localized|.vscode|__pycache__|desktop.ini|\\\$RECYCLE.BIN\" "
+alias ll="
+lsd -AFl              \
+-I .DS_Store          \
+-I .ipynb_checkpoints \
+-I .localized         \
+-I .vscode            \
+-I __pycache__        \
+-I desktop.ini        \
+-I \\\$RECYCLE.BIN "
+
+# file contents
+alias  cat='bat -p  --pager==none '
+alias cata='bat -pA --pager==none '
+
+# file processing
+alias statsort='stat -f "%Sm %N" -t "%Y-%m-%dT%H:%M:%S" * | sort '
+
+# find files
+alias      findbig="find . -type f -size +$((         1024))c -size -$((       10*1024))c -exec ls -lh {} \; " #   1-  10 kB
+alias     findvbig="find . -type f -size +$((      10*1024))c -size -$((      100*1024))c -exec ls -lh {} \; " #  10- 100 kB
+alias    findvvbig="find . -type f -size +$((      10*1024))c -size -$((     1024*1024))c -exec ls -lh {} \; " # 100-1000 kB
+alias   findvvvbig="find . -type f -size +$((    1024*1024))c -size -$((  10*1024*1024))c -exec ls -lh {} \; " #   1-  10 MB
+alias  findvvvvbig="find . -type f -size +$(( 10*1024*1024))c -size -$(( 100*1024*1024))c -exec ls -lh {} \; " #  10- 100 MB
+alias findvvvvvbig="find . -type f -size +$((100*1024*1024))c -size -$((1024*1024*1024))c -exec ls -lh {} \; " # 100-1000 MB
+
+alias deleteDSFiles="find . -name '.DS_Store' -type f -delete "
+
+# disk
+alias   dus='du -hs '
+alias usage='du -h -d1 '
+
+# most-used commands
+function commands {
+  awk '{ CMD[$2]++; count++; } END { for (a in CMD) print CMD[a] " " CMD[a]/count*100 "% " a; }'
+}
+alias  top5='history | commands | grep -v "./" | column -c3 -s" " -t | sort -nr | nl | head -n5 '
+alias top10='history | commands | grep -v "./" | column -c3 -s" " -t | sort -nr | nl | head -n10 '
+alias top15='history | commands | grep -v "./" | column -c3 -s" " -t | sort -nr | nl | head -n15 '
+alias top30='history | commands | grep -v "./" | column -c3 -s" " -t | sort -nr | nl | head -n40 '
+alias top45='history | commands | grep -v "./" | column -c3 -s" " -t | sort -nr | nl | head -n45 '
+
+# conda package manager
+alias cl='conda list --show-channel-urls '
+alias cu='conda update -n base -y -c defaults conda '
+
+# git
+alias  gl='git lg '
+alias gls='git lg --stat '
+alias  gs='git status -bs ' # replaces GPL Ghostscript 10.02.1 (2023-11-01)
+alias gsm='git switch main '
+function gc { git commit -m "$@"; } # replaces zsh(?) alias `git commit --verbose`
+
+# homebrew package manager
+alias brow='arch --x86_64 /usr/local/Homebrew/bin/brew '
+
+# visual studio code
+alias vsc='code . '
+
+# text
+alias lower="tr '[A-Z]' '[a-z]' "
+alias upper="tr '[a-z]' '[A-Z]' "
+
+# misc
+alias wtr='curl wttr.in '
+
+# computer networking
+alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder' # see dscacheutil
+alias myip="curl http://ipecho.net/plain; echo"
+alias runp="lsof -i " # example: `lsof -i :433` # check what's running on port 433
+# alias st='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 - '
+
+# display the full POSIX path as Finder window title
+alias showPPath='defaults write com.apple.finder _FXShowPosixPathInTitle YES; killall Finder /System/Library/CoreServices/Finder.app'
+alias hidePPath='defaults write com.apple.finder _FXShowPosixPathInTitle NO; killall Finder /System/Library/CoreServices/Finder.app'
+
+# display file name extensions in Finder
+alias showExtns='defaults write NSGlobalDomain AppleShowAllExtensions YES; killall Finder /System/Library/CoreServices/Finder.app'
+alias hideExtns='defaults write NSGlobalDomain AppleShowAllExtensions YES; killall Finder /System/Library/CoreServices/Finder.app'
+
+# display hidden files in Finder
+alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
+alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'

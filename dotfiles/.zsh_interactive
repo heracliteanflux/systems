@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+##############################
+#
+#     ZSH-SPECIFIC   INTERACTIVE
+#
+##############################
+
+# shell type
+#   interactive? zsh adds `l` to `$-`
+#   login?       zsh adds `i` to `$-` (just like bash)
+alias shell-interactive='[[ -o interactive ]] && print interactive shell || print non-interactive shell'
+alias       shell-login='[[ -o login ]] && print login shell || print non-login shell'
