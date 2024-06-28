@@ -11,7 +11,8 @@ Tools and Technologies
 * [ [h](https://valgrind.org/) ][ [w](https://en.wikipedia.org/wiki/Valgrind) ] Valgrind
 * [ [h](https://www.virtualbox.org/) ][ w ] VirtualBox
 
-[ [h](https://www.cc4e.com/) ] C Programming for Everybody
+Courses
+* [ [h](https://www.cc4e.com/) ] C Programming for Everybody
 
 ### YouTube
 
