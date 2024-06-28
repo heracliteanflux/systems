@@ -114,7 +114,7 @@ int mdadm_unmount (void) {
  *   -1 on failure
  *    1 on succuss
  */
-int mdadm_write_permission (void){
+int mdadm_write_permission (void) {
   if                     (is_writabl == 1) return -1;            // failure!   --> if JBOD is already writable then fail this attempt to enable write
   uint32_t opcode = op(IGND, IGND, IGND, JBOD_WRITE_PERMISSION); // otherwise, proceed with write enable
   int jbod_result = jbod_operation(opcode, NULL);
@@ -129,7 +129,7 @@ int mdadm_write_permission (void){
  *   -1 on failure
  *    1 on succuss
  */
-int mdadm_revoke_write_permission (void){
+int mdadm_revoke_write_permission (void) {
   if                     (is_writabl == 0) return -1;                   // failure!   --> if JBOD is already non writable then fail this attempt to disable write
   uint32_t opcode = op(IGND, IGND, IGND, JBOD_REVOKE_WRITE_PERMISSION); // otherwise, proceed with write disable
   int jbod_result = jbod_operation(opcode, NULL);
