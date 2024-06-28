@@ -1,0 +1,321 @@
+#!/usr/bin/env bash
+#
+# filesystem_integritator
+#
+VERSION='0.1'
+SCRIPT_PID="$$"
+#______________________________
+
+
+
+#==============================[ GLOBALS ]
+#
+#
+declare pids
+
+ ROOT="$HOME"
+TRASH="$HOME/.Trash/"
+
+OUTPUT_LOCN="$HOME/LOGS"
+OUTPUT_FILE="$OUTPUT_LOCN/${ROOT##*/}.allfiles"
+OUTPUT_META="$OUTPUT_LOCN/${ROOT##*/}.allfiles.meta"
+
+        SPINNER="$OUTPUT_LOCN/spinner.temp"
+touch "$SPINNER"
+
+source "AUX_constants"
+
+# PROMPTS
+PINFO="${GREEN}[ INFO ]${OFF} - "
+PSTAT="${BLUE}[ STAT ]${OFF} - "
+PTASK="${RED}[ TASK ]${OFF} - "
+PWARN="${RED}[ WARN ]${OFF} - "
+
+
+
+
+#==============================[ CLEANUP TASKS ]
+#
+#
+function Interrupt {
+  for pid in $pids ; do
+    ps -p "$pid" &>/dev/null && kill -9 $pid &>/dev/null
+  done
+  
+  [[ -f "$SPINNER" ]] && \mv -f "$SPINNER" "$HOME/.Trash"
+  echo -e "\n${RED}[ CANCELED ]${OFF}"
+  
+  exit
+  #trap - INT && kill -s TERM "$SCRIPT_PID"
+}
+trap Interrupt SIGINT
+
+function Cleanup {
+  for pid in $pids ; do
+    ps -p "$pid" &>/dev/null && kill -9 $pid &>/dev/null
+  done
+  [[ -f "$SPINNER" ]] && \mv -f "$SPINNER" "$HOME/.Trash"
+}
+trap Cleanup EXIT
+
+
+
+#==============================[ DISPLAY HELP ]
+#
+#
+function Display_Help {
+  :
+}
+
+
+
+#==============================[ PARSE ARGS ]
+#
+#
+function Parse_Args {
+  while getopts ':-:' VAL ; do
+    case "$VAL" in
+      ( - ) case "$OPTARG" in
+              ( dir=* ) ROOT="${OPTARG#*=}" ;;
+              ( dir   ) ROOT="${!OPTARG}" ; ((OPTIND++)) ;;
+            esac ;;
+      ( : ) echo "Error: no argument supplied" ; exit ;;
+      ( ? ) echo "Error: unknown option $OPTARG" ; exit ;;
+    esac
+  done
+}
+
+
+
+#==============================[ AUX - Spinner ]
+#
+#
+function Spinner {
+  local -i processid
+           processid="$1"
+  local    task_desc
+           task_desc="$2"
+
+  declare -a spinner
+             spinner=(
+    "${RED}[ TASK ] -${OFF} "
+    "${GREEN}>${OFF} ${RED}TASK ] -${OFF} "
+    "${RED}[${OFF}${GREEN}>${OFF}${RED}TASK ] -${OFF} "
+    "${RED}[${OFF} ${GREEN}>${OFF}${RED}ASK ] -${OFF} "
+    "${RED}[ T${OFF}${GREEN}>${OFF}${RED}SK ] -${OFF} "
+    "${RED}[ TA${OFF}${GREEN}>${OFF}${RED}K ] -${OFF} "
+    "${RED}[ TAS${OFF}${GREEN}>${OFF} ${RED}] -${OFF} "
+    "${RED}[ TASK${OFF}${GREEN}>${OFF}${RED}] -${OFF} "
+    "${RED}[ TASK${OFF} ${GREEN}>${OFF} ${RED}-${OFF} "
+    "${RED}[ TASK ]${OFF}${GREEN}>${OFF}${RED}-${OFF} "
+    "${RED}[ TASK ]${OFF} ${GREEN}>${OFF} "
+  )
+
+  local -i i
+           i=1
+  while ps -p "$processid" &>/dev/null ; do
+    echo -e "${spinner[i++%"${#spinner[@]}"]}" > "$SPINNER"
+    sleep 0.1
+  done & pids="$pids $!"
+}
+
+
+
+#==========[   TASK 1 - LOG ROTATION   ]
+#
+#
+function Rotate_Logs {
+  local -i timestmp_func            # the start time of function
+           timestmp_func=$SECONDS   #
+
+  local -a rotated_logs
+
+
+  echo "${SCP}${PINFO}Rotating logs..."
+  for out_file in $(grep "${ROOT##*/}" <(ls -A "$OUTPUT_LOCN") | sort -nr) ; do
+    local file_extension
+    local intg_extension
+    file_extension="${out_file##*.}"
+    intg_extension='^[0-9]+$'
+
+    [[ "$file_extension" =~ $intg_extension ]] && {
+    #                       ^^^^^^^^^^^^^^^   --> do not quote
+      ((file_extension++))
+      out_file_new="${out_file%.*}"
+    } || {
+      file_extension=1
+      out_file_new="$out_file"
+    }
+
+    /bin/mv "$OUTPUT_LOCN/$out_file" "$OUTPUT_LOCN/$out_file_new.$file_extension"
+    rotated_logs+=("${PINFO%-*}     $out_file -> $out_file_new.$file_extension")
+
+    echo -e "${RCP}${CLS}${PINFO}Rotating logs... ${RED}$((SECONDS - timestamp_rotate_logs)) s${OFF}"
+    (IFS=$'\n' ; echo -e "${rotated_logs[*]}")
+  done
+
+
+  # RETURN VALUE
+  duration_rotate_logs="$((SECONDS - timestmp_func))"
+  echo -e "${RCP}${CLS}${PINFO}${GREEN}COMPLETE${OFF} Rotating logs... (${RED}${duration_rotate_logs} s${OFF})."
+  (IFS=$'\n' ; echo -e "${rotated_logs[*]}")
+}
+
+
+
+#==========[   TASK 2 - FILE SYSTEM SCAN   ]
+#
+#
+function Scan_Filesystem {
+  local -i timestmp_func            # the start time of function
+           timestmp_func=$SECONDS   #
+  local    task_desc
+           task_desc='Scanning the file system...'
+  
+
+  echo -e "${UP1}" # this is necessary because the previous task generates a blank line at the end of its output
+  echo -e "${SCP}${PINFO}${task_desc}"
+  
+  find "$ROOT" -print > "$OUTPUT_FILE" & find_pid="$!"   # run the task as a  background process 
+  pids="$pids $find_pid"                                 # add the PID of the background process to the PID list
+  Spinner "$find_pid" "$task_desc"
+  
+  while ps -p "$find_pid" &>/dev/null ; do
+    echo -e "${RCP}${CLS}$(<"$SPINNER")${task_desc} ${RED}$((SECONDS - timestmp_func)) s${OFF}\r"
+  done
+  pids="${pids//$find_pid/}"                             # remove the PID of the background process from the PID list
+  
+
+  # WRITE RESULTS TO META FILE
+  echo -e "DATETIME :   $(date '+%Y-%m-%dT%H:%M:%S')"               >> "$OUTPUT_META"
+  echo -e "SHA1SUM  :   $(sha1sum "$OUTPUT_FILE" | cut -d' ' -f1 )" >> "$OUTPUT_META"
+
+
+  # RETURN VALUE
+  duration_scan_filesystem="$((SECONDS - timestmp_func))"
+  echo -e "${RCP}${CLS}${PINFO}${GREEN}COMPLETE${OFF} Filesystem scan... (${RED}${duration_scan_filesystem} s${OFF})."
+}
+
+
+
+#==========[   TASK 3 - STRIP COMMON PATH NAME   ]
+#
+#
+function Strip_Common_Pathname {
+  local -i timestmp_func            # the start time of function
+           timestmp_func=$SECONDS   #
+  local    task_desc
+           task_desc='Processing output file...'
+
+
+  echo -e "${SCP}${PINFO}${task_desc}"
+
+  gsed -i.bckp "s/${HOME//\//\\/}\/Desktop\/my_TOREVIEW//" "$OUTPUT_FILE" & sed_pid="$!" # run as a background process
+  pids="$pids $sed_pid"
+  Spinner "$sed_pid" "$task_desc"
+
+  while ps -p "$sed_pid" &>/dev/null ; do
+    echo -e "${RCP}${CLS}$(<"$SPINNER")${task_desc} ${RED}$((SECONDS - timestmp_func)) s${OFF}"
+  done
+  pids="${pids//$sed_pid/}"
+
+
+  # RETURN VALUE
+  duration_strip_common_pathname="$((SECONDS - timestmp_func))"
+  echo -e "${RCP}${CLS}${PINFO}${GREEN}COMPLETE${OFF} ${task_desc} (${RED}${duration_strip_common_pathname} s${OFF})."
+}
+
+
+
+#==========[   TASK 4 - PROCESS FILE EXTENSIONS   ]
+#
+#
+function Process_File_Extensions {
+  local -i timestmp_func            # the start time of function
+           timestmp_func=$SECONDS   #
+  local    task_desc
+           task_desc='Processing file extensions...'
+
+  declare -A file_extn_counts
+
+
+  {
+  # aggregate counts
+  mapfile -t files < "$OUTPUT_FILE"
+  for file in "${files[@]}" ; do
+    local file_name
+    local file_extn
+
+    file_name="${file##*/}"
+    file_extn="${file_name##*.}"
+    ((file_extn_counts["${file_extn:-'NO_EXTN'}"]++))
+  done
+  # write to meta file
+  echo -e "\nEXTENSIONS\n==========" >> "$OUTPUT_META"
+  for file_extn in "${!file_extn_counts[@]}" ; do
+    file_extn_count="${file_extn_counts["$file_extn"]}"
+    echo -e "$file_extn -> $file_extn_count"
+  done | sort -k3 -n -r >> "$OUTPUT_META"
+  } & aggregate_pid="$!"
+  pids="$pids $aggregate_pid"
+  Spinner "$aggregate_pid" "$task_desc"
+
+  echo -e "${SCP}${PINFO}Processing file extensions..."
+  while ps -p "$aggregate_pid" &>/dev/null ; do
+    echo -e "${RCP}${CLS}$(<"$SPINNER")${task_desc} ${RED}$((SECONDS - timestmp_func)) s${OFF}"
+  done
+  pids="${pids//$aggregate_pid/}"
+
+
+  # RETURN VALUE
+  duration_process_file_extensions="$((SECONDS - timestmp_func))"
+  echo -e "${RCP}${CLS}${PINFO}${GREEN}COMPLETE${OFF} ${task_desc} (${RED}${duration_process_file_extensions} s${OFF})"
+}
+
+
+
+#==========[   MAIN   ]
+#
+#
+
+Parse_Args "$@"
+
+/bin/cat << EOI
+
+FILE SYSTEM INTEGRITATOR
+========================
+${PINFO}Integritator Start    = $(gdate '+%a, %b %d @ %H:%M')
+${PINFO}Integritator Version  = $VERSION
+${PINFO}Integritator Out      = $OUTPUT_LOCN
+${PINFO}Integritator Out Size = $(du -hs "$OUTPUT_LOCN" | cut -d$'\t' -f1)
+${PINFO}Root Directory        = $ROOT
+EOI
+
+Rotate_Logs
+Scan_Filesystem
+Strip_Common_Pathname
+Process_File_Extensions
+
+# get max in order to format output
+arr=(
+  ${#duration_rotate_logs}
+  ${#duration_scan_filesystem}
+  ${#duration_strip_common_pathname}
+  ${#duration_process_file_extensions}
+)
+
+/bin/cat << EOO
+${PSTAT}+----------------------------+----------+
+${PSTAT}|            Task            | Duration |
+${PSTAT}+----------------------------+----------+
+${PSTAT}+----------------------------+----------+
+${PSTAT}|               Log rotation | $duration_rotate_logs s |
+${PSTAT}|            Filesystem scan | $duration_scan_filesystem s |
+${PSTAT}|               Process file | $duration_strip_common_pathname s |
+${PSTAT}| File extension aggregation | $duration_process_file_extensions s |
+${PSTAT}+----------------------------+----------+
+${PSTAT}|                      TOTAL | $((SECONDS/60))m $((SECONDS%60))s |
+${PSTAT}+----------------------------+----------+
+${PSTAT} $(du -hs "$OUTPUT_LOCN" | cut -d$'\t' -f1)
+Goodbye.
+EOO

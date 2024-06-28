@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+#
+# jup
+#
+# Description: Run Jupyter Lab server as a background process and
+#   log STDERR to a standard location
+#
+#______________________________
+
+
+function Display_Help {
+  :
+  echo 'Execute the following command to view the source code sans VERBOSE output: ``'
+}
+
+
+LOG_LOCATION="$HOME/.jupyter/lab/log"
+
+VERBOSE=':'
+DEBUG=':'
+LOG_ROTAT='[LOG ROTATION]'
+ROTAT_TIME=$((60 * 60)) # 60 * 60 * 24 * 7 * 2 = number of seconds in two weeks
+
+
+function Parse_Arguments {
+  while getopts ':-:d:' VAL ; do
+    case "$VAL" in
+      ( d ) NOTEBOOK_DIR="$OPTARG" ;;
+      ( - ) case "$OPTARG" in
+              ( verbose ) VERBOSE='echo' ;;
+              ( *       ) echo "Unknown long argument: \"$OPTARG\"" ; exit ;;
+            esac ;;
+      ( : ) echo 'Error: no argument supplied' ; exit ;;
+      ( ? ) echo "Error: unknown argument \"$OPTARG\"" ; exit ;;
+    esac
+  done
+  shift $(( OPTIND - 1 ))
+}
+
+
+function Rotate_Logs {
+  logs=($(ls "$LOG_LOCATION"))
+  $VERBOSE "$LOG_ROTAT - ============="
+  $VERBOSE "$LOG_ROTAT - Current Stats"
+  $VERBOSE "$LOG_ROTAT - -------------"
+  $VERBOSE "$LOG_ROTAT - TOTAL LOGS :   ${#logs[@]}"
+  $VERBOSE "$LOG_ROTAT - TOTAL SIZE :   $(du -hs "$LOG_LOCATION" | cut -d$'\t' -f1)"
+  $VERBOSE "$LOG_ROTAT"
+  $VERBOSE "$LOG_ROTAT - Beginning log rotation..."
+  for log in "${logs[@]}" ; do
+    $DEBUG "$LOG_ROTAT - LOG :   $log"
+    DATE="${log:0:10}"
+    TIME="${log:11:8}"
+    epoch_log="$(gdate --date "$DATE $TIME" +%s)"
+    epoch_now="$(gdate +%s)"
+    delta="$((epoch_now - epoch_log))"
+    if (( delta > ROTAT_TIME )) ; then
+      $VERBOSE "$LOG_ROTAT - ROTATING LOG :   $log"
+      $VERBOSE "$LOG_ROTAT     --->  ~/.Trash/${log}_ROTATED"
+      /bin/mv "$LOG_LOCATION/$log" "$HOME/.Trash/$log"
+    fi
+  done
+  $VERBOSE "$LOG_ROTAT - Log rotation complete."
+  $VERBOSE "$LOG_ROTAT"
+  $VERBOSE "$LOG_ROTAT - Updated Stats"
+  $VERBOSE "$LOG_ROTAT - -------------"
+  $VERBOSE "$LOG_ROTAT - TOTAL LOGS :   ${#logs[@]}"
+  $VERBOSE "$LOG_ROTAT - TOTAL SIZE :   $(du -hs "$LOG_LOCATION" | cut -d$'\t' -f1)"
+  $VERBOSE "$LOG_ROTAT - ============="
+}
+
+
+Parse_Arguments "$@"
+
+if [[ ! -d "$LOG_LOCATION" ]] ; then
+  $VERBOSE "[WARN] - The standard logging directory \"${LOG_LOCATION}\" does not exist, generating it now..."
+  mkdir "$LOG_LOCATION"
+  $VERBOSE "[INFO] - Done! The standard logging irectory \"${LOG_LOCATION}\" now exists."
+else
+  $VERBOSE "[INFO] - The standard logging directory \"${LOG_LOCATION}\" exists."
+fi
+
+$VERBOSE "[INFO] - Starting the Jupyter Lab server..."
+$VERBOSE "[INFO] - Executing command \`jupyter lab 2> \"$LOG_LOCATION/$(date "+%Y-%m-%dT%H:%M:%S").jupyterlab.log\" &\`"
+jupyter lab --notebook-dir="${NOTEBOOK_DIR:-"$HOME/.home"}" 2> "$LOG_LOCATION/$(date "+%Y-%m-%dT%H:%M:%S").jupyterlab.log" &
+$VERBOSE "[INFO] - Successfully started the Jupyter Lab server."
+$VERBOSE "[INFO] - Please execute \`kill ${!}\` to shutdown this server."
+$VERBOSE "[INFO] - Please check for forgotten processes from time to time via \`ps aux | grep '[j]upyter'\`."
+
+Rotate_Logs
