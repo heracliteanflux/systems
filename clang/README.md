@@ -56,6 +56,7 @@ More
 
 * Amini, Kamran. (2019). _Extreme C: Taking you to the limit in Concurrency, OOP, and the most advanced capabilities of C_. Packt.
 * [ [h](https://csapp.cs.cmu.edu/) ] Bryant, Randal E. & David R. O'Hallaron. (2015). _Computer Systems: A Programmer's Perspective_.
+* [ [h](https://deitel.com/c-how-to-program-9-e/) ][ [g](https://github.com/pdeitel/CHowToProgram9e) ] `2022` Deitel, Paul & Harvey Deitel. _C How to Program_. 9e.
 * Gustedt, Jens. (2019). _Modern C_. Manning.
 * Hanson, David R. (1996). _C Interfaces and Implementations: Techniques for Creating Reusable Software_. Addison-Wesley Professional.
 * Harwani, B. M. (2020). _Practical C Programming: Solutions for modern C developers to create efficient and well-structured programs_. Packt.
