@@ -70,6 +70,22 @@ command | description | example
 
 ## Testing
 
+Running the following commands without issue indicates that the implementation is sufficient.
+
+```bash
+make clean
+make
+
+./tester                                                                 # should pass all 18 unit tests
+./tester -w traces/simple-input                                          # should produce cryptographic checksum
+./tester -w traces/linear-input                                          # should produce cryptographic checksum
+./tester -w traces/random-input                                          # should produce cryptographic checksum
+
+diff -u <(./tester -w traces/simple-input) traces/simple-expected-output # should produce no output
+diff -u <(./tester -w traces/linear-input) traces/linear-expected-output # should produce no output
+diff -u <(./tester -w traces/random-input) traces/random-expected-output # should produce no output
+```
+
 The mdadm implementation is a layer just above the JBOD. The purpose of mdadm is to unify multiple disks under one storage system with a single address space. An application built on top of mdadm will issue a sequence of commands, such as the following:
 
 ```txt
@@ -89,7 +105,7 @@ Without any arguments, the unit test utility will run its suite of unit tests:
 
 With the path name argument `-w`, the unit test utility expects the path name to one of the three bundled trace files. The three possibilities are then the following:
 
-```c
+```bash
 ./tester -w traces/simple-input
 ./tester -w traces/linear-input
 ./tester -w traces/random-input

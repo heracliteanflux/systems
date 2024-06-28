@@ -143,6 +143,17 @@ tester.c    unit tests for the functions that are to be implemented; this file c
 Makefile    used by utility `make` to compile and build the executable `tester`
 ```
 
+## Testing
+
+Running the following commands without issue indicates that the implementation is sufficient.
+
+```bash
+make clean
+make
+
+./tester # should pass all 10 unit tests
+```
+
 Recommended workflow:
 1. update file `jbod.h` with the appropriate macro values
 2. edit the name of file `jbod.o` according to the architecture of the machine being used to test the implementation: in particular, if you are using Apple Silicon (M1/2/3) then remove file `jbod.o` and rename file `jbod-m1.o` to `jbod.o`.
