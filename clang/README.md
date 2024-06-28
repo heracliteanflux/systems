@@ -54,28 +54,28 @@ More
 
 ## Texts
 
-* Amini, Kamran. (2019). _Extreme C: Taking you to the limit in Concurrency, OOP, and the most advanced capabilities of C_. Packt.
-* [ [h](https://csapp.cs.cmu.edu/) ] Bryant, Randal E. & David R. O'Hallaron. (2015). _Computer Systems: A Programmer's Perspective_.
+* `2019` Amini, Kamran. _Extreme C: Taking you to the limit in Concurrency, OOP, and the most advanced capabilities of C_. Packt.
+* [ [h](https://csapp.cs.cmu.edu/) ] `2015` Bryant, Randal E. & David R. O'Hallaron. _Computer Systems: A Programmer's Perspective_. 3e.
 * [ [h](https://deitel.com/c-how-to-program-9-e/) ][ [g](https://github.com/pdeitel/CHowToProgram9e) ] `2022` Deitel, Paul & Harvey Deitel. _C How to Program_. 9e.
-* Gustedt, Jens. (2019). _Modern C_. Manning.
-* Hanson, David R. (1996). _C Interfaces and Implementations: Techniques for Creating Reusable Software_. Addison-Wesley Professional.
-* Harwani, B. M. (2020). _Practical C Programming: Solutions for modern C developers to create efficient and well-structured programs_. Packt.
-* Kernighan, Brian W. & Dennis M. Ritchie. (1988). _C Programming Language_. 2nd Ed. Pearson.
-* Klemens, Ben. (2014). _21st Century C: C Tips from the New School_. 2nd Ed. O’Reilly.
-* Loudon, Kyle. (1999). _Mastering Algorithms with C: Useful Techniques from Sorting to Encryption_. O’Reilly.
-* Loy, Marc. (2021). _Smaller C: Learn Code for Small Machines_. O'Reilly.
-* Oualline, Stephen. (2022). _Bare Metal C: Embedded Programming for the Real World_. [No Starch Press](https://nostarch.com/bare-metal-c).
-* Preschern, Christopher. (2022). _Fluent C: Principles, Practices, and Patters_. O'Reilly.
-* Reese, Richard M. (2013). _Understanding and Using C Pointers: Core Techniques for Memory Management_. O’Reilly.
-* Sandler, Nora. (2023). _Writing a C Compiler: Build a Real Programming Language from Scratch_. [No Starch Press](https://nostarch.com/writing-c-compiler).
-* Seacord, Robert C. (2020). _Effective C: An Introduction to Professional C Programming_. [No Starch Press](https://nostarch.com/Effective_C).
+* `2019` Gustedt, Jens. _Modern C_. Manning.
+* `1996` Hanson, David R. _C Interfaces and Implementations: Techniques for Creating Reusable Software_. Addison-Wesley Professional.
+* `2020` Harwani, B. M. _Practical C Programming: Solutions for modern C developers to create efficient and well-structured programs_. Packt.
+* [ [w](https://en.wikipedia.org/wiki/The_C_Programming_Language) ] `1988` Kernighan, Brian W. & Dennis M. Ritchie. _C Programming Language_. 2e. Pearson.
+* `2014` Klemens, Ben. _21st Century C: C Tips from the New School_. 2e. O’Reilly.
+* `1999` Loudon, Kyle. _Mastering Algorithms with C: Useful Techniques from Sorting to Encryption_. O’Reilly.
+* `2021` Loy, Marc. _Smaller C: Learn Code for Small Machines_. O'Reilly.
+* `2022` Oualline, Stephen. _Bare Metal C: Embedded Programming for the Real World_. [No Starch Press](https://nostarch.com/bare-metal-c).
+* `2022` Preschern, Christopher. _Fluent C: Principles, Practices, and Patters_. O'Reilly.
+* `2013` Reese, Richard M. _Understanding and Using C Pointers: Core Techniques for Memory Management_. O’Reilly.
+* `2023` Sandler, Nora. _Writing a C Compiler: Build a Real Programming Language from Scratch_. [No Starch Press](https://nostarch.com/writing-c-compiler).
+* `2020` Seacord, Robert C. _Effective C: An Introduction to Professional C Programming_. [No Starch Press](https://nostarch.com/Effective_C).
 * `1997` Sedgewick, Robert. "Algorithms in C, Parts 1-4: Fundamentals, Data Structures, Sorting, Searching". 3e. Addison-Wesley Professional.
 * `2001` Sedgewick, Robert. "Algorithms in C, Part 5: Graph Algorithms". 3e. Addison-Wesley Professional.
-* [ [h](http://www.apuebook.com/) ][ [w](https://en.wikipedia.org/wiki/Advanced_Programming_in_the_Unix_Environment) ] Stevens, W. Richard & Stephen A. Rago. (2013). _Advanced Programming in the UNIX Environment_. 3e. Addison-Wesley Professional.
-* Szuhay, Jeff. (2020). _Learn C Programming: A beginner’s guide to learning C programming the easy and disciplined way_. Packt.
+* [ [h](http://www.apuebook.com/) ][ [w](https://en.wikipedia.org/wiki/Advanced_Programming_in_the_Unix_Environment) ] `2013` Stevens, W. Richard & Stephen A. Rago. _Advanced Programming in the UNIX Environment_. 3e. Addison-Wesley Professional.
+* `2020` Szuhay, Jeff. _Learn C Programming: A beginner’s guide to learning C programming the easy and disciplined way_. Packt.
 * `1989` Tenenbaum, Aaron M.; Yedidyah Langsam; & Moshe J. Augenstein. "Data Structures Using C". Prentice Hall.
-* Van Der Linden, Peter. (1994). _Expert C Programming: Deep C Secrets_. Pearson.
-* Van Winkle, Lewis. (2019). _Hands-On Network Programming with C: Learn socket programming in C and write secure and optimized network code_. Packt.
+* `1994` Van Der Linden, Peter. _Expert C Programming: Deep C Secrets_. Pearson.
+* `2019` Van Winkle, Lewis. _Hands-On Network Programming with C: Learn socket programming in C and write secure and optimized network code_. Packt.
 
 ## Terms
 
