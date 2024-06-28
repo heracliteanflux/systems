@@ -60,7 +60,7 @@ int rdwt_validate (uint32_t start_addr, uint32_t rdwt_len, const uint8_t *rdwt_b
   if (!is_mounted)                                   return -1;   // JBOD must be mounted
   if (!(0 <= start_addr && start_addr <  JBOD_SIZE)) return -1;   // 0 <= start_addr       <  1,048,576 (2^20)
   if (!(0 <= rdwt_len   && rdwt_len   <= MAX_RDLEN)) return -1;   // 0 <= rdwt_len         <      1,024 (2^10)
-  if (!(     start_addr  + rdwt_len   <= JBOD_SIZE)) return -1;   // start_addr + rdwt_len <= 1,048,576 (2^10)
+  if (!(     start_addr  + rdwt_len   <= JBOD_SIZE)) return -1;   // start_addr + rdwt_len <= 1,048,576 (2^20)
   if (rdwt_buf == NULL  && rdwt_len   >  0)          return -1;
 
   return 1;
@@ -240,4 +240,5 @@ int mdadm_write (uint32_t start_addr, uint32_t write_len, const uint8_t *write_b
 
 ## Terms
 
+* [ [w](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures) ] JBOD (Just a bunch of disks)
 * [ [w](https://en.wikipedia.org/wiki/Mdadm) ] mdadm (Multiple Disk and Device Management)
