@@ -14,6 +14,12 @@ Tools and Technologies
 Courses
 * [ [h](https://www.cc4e.com/) ] C Programming for Everybody
 
+Online
+* [ [h](https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard) ] SEI CERT C Coding Standard
+  * https://www.cylab.cmu.edu/education/course-list/secure-coding.html
+* [ [reddit](https://www.reddit.com/r/C_Programming/) ] C Programming
+  * https://www.reddit.com/r/C_Programming/comments/138i93g/please_suggest_me_an_advanced_c_programming_book/
+
 ### YouTube
 
 Chris Kanich
@@ -51,6 +57,7 @@ Jacob Sorber
 * [ [y](https://www.youtube.com/watch?v=bdIiTxtMaKA) ] `10-12-2018`. "How to build a web client? (sockets)".
 
 More
+* [ [y](https://www.youtube.com/watch?v=xf2W1wZozbk) ] `05-29-2024` Cococry. "Make a GUI Task Management App in pure C (no bloat required)".
 * [ [y](https://www.youtube.com/watch?v=d0gS5TXarXc) ] `04-11-2024` kimylamp. "Signals. I spent 2 years to understand this part.".
 
 ## Texts
@@ -58,7 +65,7 @@ More
 * `2019` Amini, Kamran. _Extreme C: Taking you to the limit in Concurrency, OOP, and the most advanced capabilities of C_. Packt.
 * [ [h](https://csapp.cs.cmu.edu/) ] `2015` Bryant, Randal E. & David R. O'Hallaron. _Computer Systems: A Programmer's Perspective_. 3e.
 * [ [h](https://deitel.com/c-how-to-program-9-e/) ][ [g](https://github.com/pdeitel/CHowToProgram9e) ] `2022` Deitel, Paul & Harvey Deitel. _C How to Program_. 9e.
-* `2019` Gustedt, Jens. _Modern C_. Manning.
+* `2019` Gustedt, Jens. _Modern C_. [Manning](https://www.manning.com/books/modern-c).
 * `1996` Hanson, David R. _C Interfaces and Implementations: Techniques for Creating Reusable Software_. Addison-Wesley Professional.
 * `2020` Harwani, B. M. _Practical C Programming: Solutions for modern C developers to create efficient and well-structured programs_. Packt.
 * [ [w](https://en.wikipedia.org/wiki/The_C_Programming_Language) ] `1988` Kernighan, Brian W. & Dennis M. Ritchie. _C Programming Language_. 2e. Pearson.
